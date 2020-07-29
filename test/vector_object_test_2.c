@@ -30,9 +30,9 @@ static void elem_print_noend(FILE *stream, const elem_type *elem_p)
 {
     fprintf(stream, "%d\t", *(elem_p));
 }
-static void elem_deepcopy(void *dst, const void *src, size_type num_bytes)
+static void elem_deepcopy(void *dst, const void *src)
 {
-    memcpy(dst, src, num_bytes);
+    *((elem_type *)dst) = *((elem_type *)src);
 }
 static ObjectFuncs elem_obj_funcs = {
     sizeof(elem_type *),
@@ -111,8 +111,7 @@ void vector_object_test_2(void)
     vector_print(vi3, "SINGLE_LINE");
 
     fprintf(stdout, "Test vector_new_from_vector:\n");
-    /* Vector_Int *vi4 = vector_new_from_vector(vi1); */
-    Vector_Int *vi4 = vi1;
+    Vector_Int *vi4 = vector_new_from_vector(vi1);
     fprintf(stdout, "vi4:\n");
     vector_print(vi4, "SINGLE_LINE");
 

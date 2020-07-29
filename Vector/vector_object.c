@@ -31,6 +31,7 @@ Vector *vector_new_from_vector(const Vector *v)
 #ifdef MY_DEBUG
     fprintf(stderr, "In [vector_new_from_vector] new vector: OK\n");
 #endif
+    vector_free_data(v_new);
     vector_deep_copy(v, v_new);
     return v_new;
 }
@@ -118,7 +119,7 @@ void vector_free(Vector *v)
 #ifdef MY_DEBUG
     fprintf(stderr, "In [vector_free] data: OK\n");
 #endif
-    free(v->obj_funcs);
+    /* free(v->obj_funcs);*/ /*这一句还是别加了, 因为new一个Vector的时候, Obj_funcs是直接指定的*/
     v->obj_funcs = NULL;
     free(v);
 }
@@ -353,9 +354,8 @@ void vector_deep_copy(const Vector *v_src, Vector *v_des)
     {
         /* *((v_des->items_p) + i) = *((v_src->items_p) + i); */
         *(v_des->items_p + i) = v_des->obj_funcs->p_func_object_alloc(v_des->obj_funcs->object_pointer_size); /*这里不用把结果转换成void* */
-        v_des->obj_funcs->p_func_object_deepcopy(*v_des->items_p + i, *v_src->items_p + i, v_des->obj_funcs->object_pointer_size);
+        v_des->obj_funcs->p_func_object_deepcopy(*((v_des->items_p) + i), *((v_src->items_p) + i));
     }
-    return v_des;
 }
 
 void **vector_calloc_data(size_type size)

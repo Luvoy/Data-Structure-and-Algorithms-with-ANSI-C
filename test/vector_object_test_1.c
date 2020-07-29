@@ -63,9 +63,11 @@ static void student_print_noend(FILE *stream, const Student *stu1)
 static void san_wei_deepcopy(float *src, float *dst, size_type num)
 {
 }
-static void student_deepcopy(Student *stu_dst, const Student *stu_src)
+static void student_deepcopy(void *dst, const void *src)
 {
-    /*  stu_dst->dynamic_memory_flag = stu_src->dynamic_memory_flag;
+    Student *stu_dst = (Student *)dst;
+    Student *stu_src = (Student *)src;
+    stu_dst->dynamic_memory_flag = stu_src->dynamic_memory_flag;
     stu_dst->name = stu_src->name;
     stu_dst->age = stu_src->age;
     int i;
@@ -73,7 +75,7 @@ static void student_deepcopy(Student *stu_dst, const Student *stu_src)
     {
         *(stu_dst->san_wei + i) = *(stu_src->san_wei + i);
     }
-    stu_dst->san_wei_memory_flag = stu_src->san_wei_memory_flag; */
+    stu_dst->san_wei_memory_flag = stu_src->san_wei_memory_flag;
 }
 static ObjectFuncs stu_obj_funcs = {
     sizeof(Student *),
@@ -271,8 +273,7 @@ void vector_object_test_1(void)
     vector_print(vs3, "MULTI_LINES");
 
     fprintf(stdout, "Test vector_new_from_vector:\n");
-    /*  Vector_Student *vs4 = vector_new_from_vector(vs1); */
-    Vector_Student *vs4 = vs1;
+    Vector_Student *vs4 = vector_new_from_vector(vs1);
     fprintf(stdout, "vs4:\n");
     vector_print(vs4, "MULTI_LINES");
 
@@ -348,11 +349,11 @@ void vector_object_test_1(void)
     vector_reverse(vs2, sizeof(Student *));
     vector_print(vs2, "MULTI_LINES");
 
-    fprintf(stdout, "Test vector_deep_copy:copy vs4 to vs2\nBefore copy, vs2:\n");
+    /* fprintf(stdout, "Test vector_deep_copy:copy vs4 to vs2\nBefore copy, vs2:\n");
     vector_print(vs2, "MULTI_LINES");
     vector_deep_copy(vs4, vs2);
     fprintf(stdout, "after copy, vs2:\n");
-    vector_print(vs2, "MULTI_LINES");
+    vector_print(vs2, "MULTI_LINES"); */
     /* 注意! vs2可能不能用了*/
     fprintf(stdout, "Test vector_join:\nBefore join, vs3:\n");
     vector_print(vs3, "MULTI_LINES");

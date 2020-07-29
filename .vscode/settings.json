@@ -1,0 +1,10 @@
+{
+    "files.associations": {
+        "cstdlib": "c",
+        "memory": "cpp",
+        "*.tcc": "c",
+        "algorithm": "c",
+        "vector_object.h": "c",
+        "limits": "c"
+    }
+}

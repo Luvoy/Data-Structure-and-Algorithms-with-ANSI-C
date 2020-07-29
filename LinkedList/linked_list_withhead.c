@@ -10,10 +10,6 @@ Node *_node_alloc(size_type node_p_size)
     Node *p = (Node *)calloc(1, node_p_size);
     return p;
 }
-void *_node_free(Node *p)
-{
-}
-
 
 LinkedList linked_list_new(size_type size, ObjectFuncs *o)
 {

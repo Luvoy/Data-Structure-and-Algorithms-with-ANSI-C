@@ -68,9 +68,27 @@ void hash_map_test_1()
     hash_map_print(hm, fp, print_key, print_value);
     hash_map_put_kv(&hm, NULL, &a[11]); /*put NULL测试*/
     hash_map_print(hm, fp, print_key, print_value);
+    void **keys = hash_map_keys(hm);
+    void **values = hash_map_values(hm);
+    size_t i;
+    for (i = 1; i < *(size_t *)(*keys + 0); ++i)
+    {
+        fprintf(stdout, "key %4d: ", i - 1);
+        print_key(stdout, *(keys + i));
+        fprintf(stdout, "\n");
+    }
+    for (i = 1; i < *(size_t *)(*values + 0); ++i)
+    {
+        fprintf(stdout, "value %4d: ", i - 1);
+        print_value(stdout, *(values + i));
+        fprintf(stdout, "\n");
+    }
+    free(*keys);
+    free(*values);
+    free(*keys);
+    free(*values);
     hash_map_free(&hm);
 }
-
 void hash_map_test_2()
 {
     FILE *fp;

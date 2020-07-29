@@ -382,6 +382,62 @@ void *hash_map_remove(HashMap *hm, void *key)
     return NULL;
 }
 
+void **hash_map_keys(HashMap *hm)
+{ /* 开辟了used_size+1个void*, 其中首个转成size_t*可以进一步获取keys的个数
+然后遍历剩下的used_size个可以得到各个key的指针*/
+    /* 调用者必须free(*return),free(return)*/
+    assert(hm);
+    void **keys = calloc(1 + hm->used_size, sizeof(void *));
+    assert(keys);
+    *(keys + 0) = (size_t *)calloc(1, sizeof(size_t));
+    assert(*keys);
+    *(size_t *)(*keys + 0) = hm->used_size;
+    HashNode *entry;
+    uint32_t hash_index;
+    size_t used_index = 1;
+    for (hash_index = 0; hash_index < hm->total_size; hash_index++)
+    {
+        for (entry = hm->maps + hash_index; entry != NULL; entry = entry->next)
+        {
+
+            if ((hash_index == 0 && entry->data && entry->data->value) || (hash_index != 0 && entry->data && entry->data->key))
+            {
+                *(keys + used_index) = entry->data->key;
+                used_index++;
+            }
+        }
+    }
+    return keys;
+}
+
+void **hash_map_values(HashMap *hm)
+{ /* 开辟了used_size+1个void*, 其中首个转成size_t*可以进一步获取keys的个数
+然后遍历剩下的used_size个可以得到各个value的指针*/
+    /* 调用者必须free(*return),free(return)*/
+    assert(hm);
+    void **values = calloc(1 + hm->used_size, sizeof(void *));
+    assert(values);
+    *(values + 0) = (size_t *)calloc(1, sizeof(size_t));
+    assert(*values);
+    *(size_t *)(*values + 0) = hm->used_size;
+    HashNode *entry;
+    uint32_t hash_index;
+    size_t used_index = 1;
+    for (hash_index = 0; hash_index < hm->total_size; hash_index++)
+    {
+        for (entry = hm->maps + hash_index; entry != NULL; entry = entry->next)
+        {
+
+            if ((hash_index == 0 && entry->data && entry->data->value) || (hash_index != 0 && entry->data && entry->data->key))
+            {
+                *(values + used_index) = entry->data->value;
+                used_index++;
+            }
+        }
+    }
+    return values;
+}
+
 void hash_map_print(HashMap *hm, FILE *f, void (*print_key)(FILE *, const void *), void (*print_value)(FILE *, const void *))
 {
     fprintf(f, "=============== HashMap at 0x%p ===============\n", hm);

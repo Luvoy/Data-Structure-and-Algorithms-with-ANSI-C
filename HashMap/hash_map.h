@@ -9,7 +9,6 @@ typedef struct KV
 {
     void *key;
     void *value;
-
 } KV;
 
 typedef struct HashNode
@@ -39,4 +38,7 @@ extern void *hash_map_get(HashMap *hm, void *key);
 extern my_bool hash_map_contains(HashMap *hm, const void *key);
 extern void *hash_map_remove(HashMap *hm, void *key);
 extern void hash_map_print(HashMap *hm, FILE *f, void (*print_key)(FILE *, const void *), void (*print_value)(FILE *, const void *));
+
+void **hash_map_keys(HashMap *hm);
+void **hash_map_values(HashMap *hm);
 #endif

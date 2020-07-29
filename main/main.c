@@ -10,9 +10,9 @@ int main(int argc, char const *argv[])
 {
     /* str_func_test(); */
     /* vector_object_test_1() */;
-    vector_object_test_2();
+    /*  vector_object_test_2(); */
     /* linked_list_withhead_test_1(); */
-    /* hash_map_test_1(); */
+    hash_map_test_1();
     /*  hash_map_test_2() */;
     return 0;
 }

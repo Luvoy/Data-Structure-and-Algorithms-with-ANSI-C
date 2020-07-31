@@ -5,12 +5,10 @@
 #define MAX_ALLOCATE_SIZE 8
 #endif
 
-typedef struct Vector 
-{
-    /* 这是一种使用元素指针的、动态分配内存、内存连续的数组，
-     * 元素类型可以在type.h中指定，一般为基础类型或指针类型，
-     * (也就是仅支持单一的数值类型, 而不支持结构体、多种基础类型组合的类型等)。
-     */
+typedef struct Vector
+{ /*这是一种使用元素指针的、动态分配内存、内存连续的数组，
+    元素类型可以在type.h中指定，一般为基础类型或指针类型，
+    (也就是仅支持单一的数值类型, 而不支持结构体、多种基础类型组合的类型等)。*/
     size_type allocated_size;
     size_type used_size;
     element_type *items_p;

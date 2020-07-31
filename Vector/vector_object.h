@@ -10,12 +10,11 @@
 typedef struct Vector
 {
     /* 这是一种使用万能指针的、动态分配内存、内存连续的Vector；
-     * object类型可以调用时指定，但仅支持同一种的变量类型；
-     * 既支持基础类型或指针类型数值类型, 又支持结构体、多种基础类型组合的类型等，但传入的都是void*；
-     * 需要实现单个对象的打印, 分配空间, free等操作；
-     * 需要把上述这些操作函数的函数指针复制到一个ObjectFuncs结构体里，Vector需要这个结构体；
-     * 具体的object和Vector之间的很多操作通过强制转换实现；
-     */
+      object类型可以调用时指定，但仅支持同一种的变量类型；
+      既支持基础类型或指针类型数值类型, 又支持结构体、多种基础类型组合的类型等，但传入的都是void*；
+     需要实现单个对象的打印, 分配空间, free等操作；
+     需要把上述这些操作函数的函数指针复制到一个ObjectFuncs结构体里，Vector需要这个结构体；
+     具体的object和Vector之间的很多操作通过强制转换实现； */
     size_type allocated_size;
     size_type used_size;
     void **items_p;

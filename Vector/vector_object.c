@@ -295,7 +295,7 @@ void *vector_pop_i(Vector *v, size_type index)
     return ret;
 }
 
-void vector_insert(Vector *v, size_t index, void *object)
+void vector_insert(Vector *v, unsigned int index, void *object)
 {
     assert(v != NULL);
     if (index < 0 || index > v->used_size)

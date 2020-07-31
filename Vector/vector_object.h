@@ -1,5 +1,6 @@
 #include "../object.h"
 #include "../my_bool.h"
+#include <stdarg.h>
 #ifndef _VECTOR_OBJECT_H_
 #define _VECTOR_OBJECT_H_
 
@@ -8,8 +9,7 @@
 #endif
 
 typedef struct Vector
-{
-    /* 这是一种使用万能指针的、动态分配内存、内存连续的Vector；
+{ /* 这是一种使用万能指针的、动态分配内存、内存连续的Vector；
       object类型可以调用时指定，但仅支持同一种的变量类型；
       既支持基础类型或指针类型数值类型, 又支持结构体、多种基础类型组合的类型等，但传入的都是void*；
      需要实现单个对象的打印, 分配空间, free等操作；
@@ -38,7 +38,7 @@ void vector_append(Vector *v, void *object);
 void vector_join(Vector *v_left, Vector *v_right);
 void *vector_pop(Vector *v);
 void *vector_pop_i(Vector *v, size_type index);
-void vector_insert(Vector *v, size_t index, void *object);
+void vector_insert(Vector *v, unsigned int index, void *object);
 void vector_deep_copy(const Vector *v_src, Vector *v_des);
 Vector *vector_slice(Vector *v, size_type start, size_type end, size_type step, ObjectFuncs *o);
 void vector_reverse(Vector *v, size_type size);

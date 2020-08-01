@@ -21,14 +21,16 @@ typedef struct HashMap
 {
     size_t total_size;
     size_t used_size;
-    const char *hash_algo;
+    /* const char *hash_algo; */
+    uint32_t (*p_func_hash_code)(const void *, size_t);
+    my_bool (*p_func_key_equal)(const void *, const void *);
+    size_t (*p_func_key_len)(const void *key);
     HashNode *maps;
 } HashMap;
-extern my_bool key_equals(const void *key1, const void *key2);
-extern uint32_t murmur_hash(const void *p);
-extern uint32_t BKDR_hash(const void *p);
-extern uint32_t hash_code(const void *p, const char *hash_algo);
-extern HashMap *hash_map_new(size_t n, const char *hash_algo);
+extern uint32_t murmur_hash(const void *p, size_t len);
+extern uint32_t BKDR_hash(const void *p, size_t len);
+/* extern uint32_t hash_code(const void *p, size_t len, const char *hash_algo); */
+extern HashMap *hash_map_new(size_t n, uint32_t (*p_func_hash_code)(const void *, size_t), my_bool (*p_func_key_equal)(const void *, const void *), size_t (*p_func_key_len)(const void *key));
 extern void hash_map_free(HashMap **hm);
 extern HashMap *hash_map_extend(HashMap *hm);
 extern void *hash_map_put_kv(HashMap **hm, void *key, void *value);
@@ -39,6 +41,4 @@ extern my_bool hash_map_contains(HashMap *hm, const void *key);
 extern void *hash_map_remove(HashMap *hm, void *key);
 extern void hash_map_print(HashMap *hm, FILE *f, void (*print_key)(FILE *, const void *), void (*print_value)(FILE *, const void *));
 
-void **hash_map_keys(HashMap *hm);
-void **hash_map_values(HashMap *hm);
 #endif

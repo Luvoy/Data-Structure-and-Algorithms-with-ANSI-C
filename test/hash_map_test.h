@@ -5,5 +5,6 @@
 
 void hash_map_test_1();
 void hash_map_test_2();
+void hash_map_test_3();
 
 #endif

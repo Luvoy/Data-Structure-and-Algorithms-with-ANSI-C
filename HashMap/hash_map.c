@@ -19,32 +19,17 @@
 #ifndef HASH_MAP_DEBUG
 #define HASH_MAP_DEBUG
 #endif
-extern my_bool key_equals(const void *key1, const void *key2)
-{
-    if (key1 == NULL && key2 != NULL)
-    {
-        return FALSE;
-    }
-    if (key1 != NULL && key2 == NULL)
-    {
-        return FALSE;
-    }
-    if (key1 == NULL && key2 == NULL)
 
-    {
-        return TRUE;
-    }
-    return !strcmp((const char *)key1, (const char *)key2);
-}
-
-extern uint32_t murmur_hash(const void *p)
+extern uint32_t murmur_hash(const void *p, size_t len)
 {
     char *str = (char *)p;
+    /*
     size_t len;
     while (*str++)
     {
         ++len;
     }
+    */
     uint32_t h, k;
     h = 0 ^ len;
     while (len >= 4)
@@ -80,36 +65,37 @@ extern uint32_t murmur_hash(const void *p)
     return h;
 }
 
-extern uint32_t BKDR_hash(const void *p)
+extern uint32_t BKDR_hash(const void *p, size_t len)
 {
     char *str = (char *)p;
     uint32_t seed = 131; /* 31 131 1313 13131 131313 etc..*/
     uint32_t hash = 0;
-    while (*str)
+    /* while (*str) */
+    while (len--)
     {
         hash = hash * seed + (*str++);
     }
     return (hash & 0x7FFFFFFF);
 }
 
-extern uint32_t hash_code(const void *str, const char *hash_algo)
+/* extern uint32_t hash_code(const void *p, size_t len, const char *hash_algo)
 {
-    assert(str);
+    assert(p);
     if (strcmp(hash_algo, "murmur") == 0)
     {
-        return murmur_hash(str);
+        return murmur_hash(p, len);
     }
     else if (strcmp(hash_algo, "BKDR") == 0)
     {
-        return BKDR_hash(str);
+        return BKDR_hash(p, len);
     }
     else
     {
-        return BKDR_hash(str);
+        return BKDR_hash(p, len);
     }
-}
+} */
 
-extern HashMap *hash_map_new(size_t n, const char *hash_algo)
+extern HashMap *hash_map_new(size_t n, uint32_t (*p_func_hash_code)(const void *, size_t), my_bool (*p_func_key_equal)(const void *, const void *), size_t (*p_func_key_len)(const void *key))
 {
     if (n < 0)
     {
@@ -125,7 +111,9 @@ extern HashMap *hash_map_new(size_t n, const char *hash_algo)
     assert(hm);
     hm->total_size = temp + 1; /* 给null留一个*/
     hm->used_size = 0;
-    hm->hash_algo = hash_algo;
+    hm->p_func_hash_code = p_func_hash_code;
+    hm->p_func_key_equal = p_func_key_equal;
+    hm->p_func_key_len = p_func_key_len;
     hm->maps = (HashNode *)calloc(hm->total_size, sizeof(HashNode));
     assert(hm->maps);
     size_t i;
@@ -183,7 +171,7 @@ extern void hash_map_free(HashMap **hm)
 
 extern HashMap *hash_map_extend(HashMap *hm)
 {
-    HashMap *hm_new = hash_map_new(hm->total_size, hm->hash_algo); /*这里直接传入hm的总size即可，因为size一直是2的次幂+1，会自动*2并且+1*/
+    HashMap *hm_new = hash_map_new(hm->total_size, hm->p_func_hash_code, hm->p_func_key_equal, hm->p_func_key_len); /*这里直接传入hm的总size即可，因为size一直是2的次幂+1，会自动*2并且+1*/
     HashNode *entry;
     uint32_t hash_index;
     for (hash_index = 0; hash_index < hm->total_size; hash_index++)
@@ -210,7 +198,7 @@ extern void *hash_map_put_kv(HashMap **hm, void *key, void *value)
     uint32_t index;
     if (key != NULL)
     {
-        uint32_t hash = hash_code(key, (*hm)->hash_algo);
+        uint32_t hash = (*hm)->p_func_hash_code(key, (*hm)->p_func_key_len(key));
         index = (hash & ((*hm)->total_size - 2)) + 1;
 #ifdef HASH_MAP_DEBUG
         fprintf(stdout, "hash of key: %u, index: %u\n", hash, index);
@@ -259,7 +247,7 @@ extern void *hash_map_put_kv(HashMap **hm, void *key, void *value)
 #ifdef NODE_ADD_TAIL
         temp = entry; /*比entry慢一个*/
 #endif
-        if (entry->data->key == key || key_equals(entry->data->key, key))
+        if (entry->data->key == key || (*hm)->p_func_key_equal(entry->data->key, key))
         { /*已有 ,直接覆盖*/
             ret = entry->data->value;
             entry->data->value = value;
@@ -295,7 +283,7 @@ void *hash_map_get(HashMap *hm, void *key)
     uint32_t index;
     if (key != NULL)
     {
-        size_t i = hash_code(key, hm->hash_algo);
+        size_t i = hm->p_func_hash_code(key, hm->p_func_key_len(key));
         index = (i & (hm->total_size - 2)) + 1;
     }
     else
@@ -305,7 +293,7 @@ void *hash_map_get(HashMap *hm, void *key)
     HashNode *entry;
     for (entry = hm->maps + index; entry != NULL; entry = entry->next)
     {
-        if (key == entry->data->key || key_equals(key, entry->data->key))
+        if (key == entry->data->key || hm->p_func_key_equal(key, entry->data->key))
         {
             return entry->data->value;
         }
@@ -320,7 +308,7 @@ my_bool hash_map_contains(HashMap *hm, const void *key)
     {
         return TRUE;
     }
-    uint32_t index = (hash_code(key, hm->hash_algo) & (hm->total_size - 2)) + 1;
+    uint32_t index = (hm->p_func_hash_code(key, hm->p_func_key_len(key)) & (hm->total_size - 2)) + 1;
     HashNode *entry = hm->maps + index;
     if (entry->data->key == NULL)
     {
@@ -328,7 +316,7 @@ my_bool hash_map_contains(HashMap *hm, const void *key)
     }
     while (entry)
     {
-        if (key_equals(entry->data->key, key))
+        if (hm->p_func_key_equal(entry->data->key, key))
         {
             return TRUE;
         }
@@ -342,7 +330,7 @@ void *hash_map_remove(HashMap *hm, void *key)
     uint32_t index;
     if (key != NULL)
     {
-        size_t i = hash_code(key, hm->hash_algo);
+        size_t i = hm->p_func_hash_code(key, hm->p_func_key_len(key));
         index = (i & (hm->total_size - 2)) + 1;
     }
     else
@@ -350,7 +338,7 @@ void *hash_map_remove(HashMap *hm, void *key)
         index = 0;
     }
     HashNode *entry = hm->maps + index;
-    if (entry->data->key == key || key_equals(entry->data->key, key))
+    if (entry->data->key == key || hm->p_func_key_equal(entry->data->key, key))
     { /*如果首个就是*/
         void *ret = entry->data->value;
         /* free(entry->data);
@@ -367,7 +355,7 @@ void *hash_map_remove(HashMap *hm, void *key)
     {
         temp = entry;
         entry = entry->next;
-        if (entry->data->key == key || key_equals(entry->data->key, key))
+        if (entry->data->key == key || hm->p_func_key_equal(entry->data->key, key))
         {
             void *ret = entry->data->value;
             temp->next = entry->next;

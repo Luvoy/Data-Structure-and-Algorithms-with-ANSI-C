@@ -12,7 +12,8 @@ int main(int argc, char const *argv[])
     /* vector_object_test_1() */;
     /*  vector_object_test_2(); */
     /* linked_list_withhead_test_1(); */
-    hash_map_test_1();
+    /* hash_map_test_1(); */
     /*  hash_map_test_2() */;
+    hash_map_test_3();
     return 0;
 }

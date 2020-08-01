@@ -68,6 +68,15 @@ void hash_map_test_1()
     hash_map_print(hm, fp, print_key, print_value);
     hash_map_put_kv(&hm, NULL, &a[11]); /*put NULL测试*/
     hash_map_print(hm, fp, print_key, print_value);
+    void *test_get = hash_map_get(hm, NULL); /*get NULL*/
+    fprintf(stdout, "key=NULL, get value=%d\n", *(int *)test_get);
+    fprintf(stdout, "now try to change the value through get func\n");
+    *(int *)test_get = 13; /*用get修改*/
+    hash_map_print(hm, fp, print_key, print_value);
+    fprintf(stdout, "now try to change the value of \"egeawef\", using: (*(int *)(hash_map_get(hm, \"egeawef\")))++;\n");
+    (*(int *)(hash_map_get(hm, "egeawef")))++;
+    hash_map_print(hm, fp, print_key, print_value);
+    fprintf(stdout, "test get keys, get values\n");
     void **keys = hash_map_keys(hm);
     void **values = hash_map_values(hm);
     size_t i;
@@ -85,8 +94,8 @@ void hash_map_test_1()
     }
     free(*keys);
     free(*values);
-    free(*keys);
-    free(*values);
+    free(keys);
+    free(values);
     hash_map_free(&hm);
 }
 void hash_map_test_2()

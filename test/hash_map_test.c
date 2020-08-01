@@ -182,13 +182,14 @@ static size_t key_int_len(const void *key)
 }
 extern uint32_t BKDR_hash_int(const void *p, size_t len)
 {
-    char *str = (char *)p;
+    int temp = (int)p;
+    char *str = (char *)&temp;
     uint32_t seed = 13131; /* 31 131 1313 13131 131313 etc..*/
     uint32_t hash = 0;
     /* while (*str) */
     while (len--)
     {
-        hash = hash * seed + (str++);
+        hash = hash * seed + (*str++);
     }
     return (hash & 0x7FFFFFFF);
 }
@@ -212,7 +213,7 @@ void hash_map_test_3()
     hash_map_free(&hm_int_int);
 
     /* int nums[] = {7, 7, 5, 7, 5, 1, 5, 7, 5, 5, 7, 7, 7, 7, 7, 7} */;
-    int nums[] = {3, 2, 3};
+    int nums[] = {-1, 1, 1, 1, 2, 1};
     int numsSize = sizeof(nums) / sizeof(int);
     HashMap *hm = hash_map_new(numsSize, BKDR_hash_int, key_int_equals, key_int_len);
     int i;

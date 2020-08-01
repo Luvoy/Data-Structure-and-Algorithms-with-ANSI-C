@@ -158,10 +158,11 @@ extern void hash_map_free(HashMap **hm)
         /*释放头*/
         free(((*hm)->maps + i)->data);
         ((*hm)->maps + i)->data = NULL;
-        if (i != 0)
+        /* if (i != 0)
         {
-            free((*hm)->maps + i);
-        }
+            free(((*hm)->maps) + i);
+        } */
+        /* 这里不用free！*/
     }
     free((*hm)->maps);
     (*hm)->maps = NULL;

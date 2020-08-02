@@ -430,8 +430,8 @@ void **hash_map_values(HashMap *hm)
 void hash_map_print(HashMap *hm, FILE *f, void (*print_key)(FILE *, const void *), void (*print_value)(FILE *, const void *))
 {
     fprintf(f, "=============== HashMap at 0x%p ===============\n", hm);
-    fprintf(f, "=============== used_size: %10d ===============\n", hm->used_size);
-    fprintf(f, "=============== total_size: %9d ===============\n", hm->total_size);
+    fprintf(f, "=============== used_size: %10u ===============\n", hm->used_size);
+    fprintf(f, "=============== total_size: %9u ===============\n", hm->total_size);
     uint32_t index;
     char *format = long_long_int_format_align_str(hm->total_size);
     for (index = 0; index < hm->total_size; ++index)

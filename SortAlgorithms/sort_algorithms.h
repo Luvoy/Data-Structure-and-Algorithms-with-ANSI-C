@@ -2,14 +2,8 @@
 #define _SORT_ALGORITHMS_H_
 /*
 使用方法:
-1. 修改元素类型, 必须改成基础类型或指针类型. 直接用struct是不对的. 不修改默认int
-#ifdef ELEMENT_TYPE
-#define elem_type [you want]
-#endif
-
-2. 
-实现int (*compare)(const void *, const void *)函数
-已给出的compare函数, 默认使用memcmp(a,b, sizeof(elem_type)), 升序;
+arr中的元素类型必须一致， 并且必须是基本类型或指针类型，（这意味着不支持结构体本身，应该使用结构体指针）
+需要实现int (*compare)(const void *, const void *)函数
 
 升序降序也通过compare函数实现
 */
@@ -19,14 +13,14 @@
 typedef uint32_t sort_index_type;
 #endif
 
-#ifndef ELEMENT_TYPE
-#define ELEMENT_TYPE
-#define elem_type int
+#ifndef ELEM_SIZE_TYPE
+#define ELEM_SIZE_TYPE
+typedef uint32_t elem_size_type;
 #endif
 
-extern void swap(void *a, void *b);
+extern void swap(void *a, void *b, elem_size_type);
 extern int compare(const void *a, const void *b);
 
-extern void bubble_sort(void *arr, sort_index_type size, int (*compare)(const void *, const void *));
+extern void bubble_sort(void *arr, sort_index_type arr_size, elem_size_type elem_size, int (*compare)(const void *, const void *));
 
 #endif

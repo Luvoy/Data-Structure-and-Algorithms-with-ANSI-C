@@ -18,11 +18,11 @@ extern int compare(const void *a, const void *b)
 { /*example*/
     return 0;
 }
-#define elem_type long
+
 extern void bubble_sort(void *arr, sort_index_type arr_size, elem_size_type elem_size, int (*compare)(const void *, const void *))
 {
     assert(arr);
-    elem_type *arr_cast = (elem_type *)(arr);
+    uint8_t *arr_cast = (uint8_t *)(arr);
     if (arr_size <= 1)
     {
         return;
@@ -32,9 +32,9 @@ extern void bubble_sort(void *arr, sort_index_type arr_size, elem_size_type elem
     {
         for (j = 0; j < arr_size - i - 1; ++j)
         {
-            if (compare((arr_cast + j), (arr_cast + j + 1)) > 0)
+            if (compare((arr_cast + j * elem_size), (arr_cast + (j + 1) * elem_size)) > 0)
             { /*默认升序*/
-                swap((arr_cast + j), (arr_cast + j + 1), elem_size);
+                swap((arr_cast + j * elem_size), (arr_cast + (j + 1) * elem_size), elem_size);
             }
         }
     }

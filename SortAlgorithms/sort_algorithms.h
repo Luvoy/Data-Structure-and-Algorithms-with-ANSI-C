@@ -2,9 +2,7 @@
 #define _SORT_ALGORITHMS_H_
 /*
 使用方法:
-arr中的元素类型必须一致， 并且必须是基本类型或指针类型，（这意味着不支持结构体本身，应该使用结构体指针）
-需要实现int (*compare)(const void *, const void *)函数
-
+arr中的元素类型必须一致, 需要实现int (*compare)(const void *, const void *)函数
 升序降序也通过compare函数实现
 */
 #include <stdint.h>

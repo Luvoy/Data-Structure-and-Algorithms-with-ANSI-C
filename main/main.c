@@ -16,10 +16,13 @@ int main(int argc, char const *argv[])
     /*  hash_map_test_2() */;
     /* hash_map_test_3() */;
     sort_test_1();
+    sort_test_11();
+    sort_test_111();
     sort_test_2();
     sort_test_22();
     sort_test_3();
     sort_test_33();
     sort_test_333();
+    sort_test_4();
     return 0;
 }

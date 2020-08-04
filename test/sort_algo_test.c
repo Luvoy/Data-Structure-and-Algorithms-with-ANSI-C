@@ -1,7 +1,7 @@
 #include "sort_algo_test.h"
 #include <stdio.h>
 #include <stdlib.h>
-
+#include <string.h>
 #define elem_type long
 
 int compare_1(const void *a, const void *b)
@@ -10,8 +10,11 @@ int compare_1(const void *a, const void *b)
 }
 void sort_test_1()
 {
+    fprintf(stdout, "test1:\n");
     elem_type a[] = {4, 6, 5, 2, 8, 1, 9, 7, 0, -2, 3};
-    bubble_sort(a, (sort_index_type)(sizeof(a) / sizeof(elem_type)), (elem_size_type)sizeof(elem_type), compare_1);
+    /* bubble_sort(a, (sort_index_type)(sizeof(a) / sizeof(elem_type)), (elem_size_type)sizeof(elem_type), compare_1); */
+    /* bubble_sort_improve(a, (sort_index_type)(sizeof(a) / sizeof(elem_type)), (elem_size_type)sizeof(elem_type), compare_1); */
+    select_sort(a, (sort_index_type)(sizeof(a) / sizeof(elem_type)), (elem_size_type)sizeof(elem_type), compare_1);
     int i;
     for (i = 0; i < sizeof(a) / sizeof(elem_type); ++i)
     {
@@ -19,6 +22,39 @@ void sort_test_1()
     }
     fprintf(stdout, "\n");
 }
+void sort_test_11()
+{
+    fprintf(stdout, "test11: 2 elements test\n");
+    elem_type a[] = {6, 5};
+    /* bubble_sort(a, (sort_index_type)(sizeof(a) / sizeof(elem_type)), (elem_size_type)sizeof(elem_type), compare_1); */
+    /* bubble_sort_improve(a, (sort_index_type)(sizeof(a) / sizeof(elem_type)), (elem_size_type)sizeof(elem_type), compare_1); */
+    select_sort(a, (sort_index_type)(sizeof(a) / sizeof(elem_type)), (elem_size_type)sizeof(elem_type), compare_1);
+    int i;
+    for (i = 0; i < sizeof(a) / sizeof(elem_type); ++i)
+    {
+        fprintf(stdout, "%ld, ", a[i]);
+    }
+    fprintf(stdout, "\n");
+}
+int compare_1_descent(const void *a, const void *b)
+{
+    return *(const elem_type *)b - *(const elem_type *)a;
+}
+void sort_test_111()
+{
+    fprintf(stdout, "test111: descent test\n");
+    elem_type a[] = {4, 6, 5, 2, 8, 1, 9, 7, 0, -2, 3};
+    /* bubble_sort(a, (sort_index_type)(sizeof(a) / sizeof(elem_type)), (elem_size_type)sizeof(elem_type), compare_1); */
+    /* bubble_sort_improve(a, (sort_index_type)(sizeof(a) / sizeof(elem_type)), (elem_size_type)sizeof(elem_type), compare_1_descent); */
+    select_sort(a, (sort_index_type)(sizeof(a) / sizeof(elem_type)), (elem_size_type)sizeof(elem_type), compare_1_descent);
+    int i;
+    for (i = 0; i < sizeof(a) / sizeof(elem_type); ++i)
+    {
+        fprintf(stdout, "%ld, ", a[i]);
+    }
+    fprintf(stdout, "\n");
+}
+
 /* --------------------test2------------------------*/
 typedef struct Student
 {
@@ -34,7 +70,8 @@ int compare_2(const void *a, const void *b)
     return (*((const elem_type *)a)).age - (*((const elem_type *)b)).age;
 }
 void sort_test_2()
-{ /*测试失败*/
+{
+    fprintf(stdout, "test2:\n");
     elem_type stu1 = {"Tom", 4};
     elem_type stu2 = {"Amy", 6};
     elem_type stu3 = {"Miguel", 5};
@@ -45,7 +82,10 @@ void sort_test_2()
     elem_type stu8 = {"Tony", 3};
 
     elem_type a[] = {stu1, stu2, stu3, stu4, stu5, stu6, stu7, stu8};
-    bubble_sort(a, (sort_index_type)(sizeof(a) / sizeof(elem_type)), (elem_size_type)sizeof(elem_type), compare_2);
+    /* bubble_sort(a, (sort_index_type)(sizeof(a) / sizeof(elem_type)), (elem_size_type)sizeof(elem_type), compare_2); */
+    /* bubble_sort_improve(a, (sort_index_type)(sizeof(a) / sizeof(elem_type)), (elem_size_type)sizeof(elem_type), compare_2); */
+    select_sort(a, (sort_index_type)(sizeof(a) / sizeof(elem_type)), (elem_size_type)sizeof(elem_type), compare_2);
+
     int i;
     for (i = 0; i < sizeof(a) / sizeof(elem_type); ++i)
     {
@@ -54,7 +94,8 @@ void sort_test_2()
     fprintf(stdout, "\n");
 }
 void sort_test_22()
-{ /*测试失败*/
+{
+    fprintf(stdout, "test22:\n");
     elem_type stu1 = {"Tom", 4};
     elem_type stu2 = {"Amy", 6};
     elem_type stu3 = {"Miguel", 5};
@@ -81,7 +122,9 @@ void sort_test_22()
         fprintf(stdout, "%s: %d\n", a[i].name, a[i].age);
     }
     fprintf(stdout, "after sort:\n");
-    bubble_sort(a, 8, (elem_size_type)sizeof(elem_type), compare_2);
+    /* bubble_sort(a, 8, (elem_size_type)sizeof(elem_type), compare_2); */
+    /* bubble_sort_improve(a, 8, (elem_size_type)sizeof(elem_type), compare_2); */
+    select_sort(a, 8, (elem_size_type)sizeof(elem_type), compare_2);
     for (i = 0; i < 8; ++i)
     {
         fprintf(stdout, "%s: %d\n", a[i].name, a[i].age);
@@ -102,6 +145,7 @@ int compare_3(const void *a, const void *b)
 }
 void sort_test_3()
 {
+    fprintf(stdout, "test3:\n");
     Student stu1 = {"Tom", 4};
     Student stu2 = {"Amy", 6};
     Student stu3 = {"Miguel", 5};
@@ -127,7 +171,9 @@ void sort_test_3()
     printf("a:0x%p, a+1:0x%p, a+2:0x%p\n", a, a + 1, a + 2);
     printf("*a:0x%p, *(a+1):0x%p, *(a+2):0x%p\n", *a, *(a + 1), *(a + 2));
     printf("*a->age:%d, *(a+1)->age:%d, *(a+2)->age:%d\n", (*a)->age, (*(a + 1))->age, (*(a + 2))->age);
-    bubble_sort(a, (sort_index_type)(sizeof(a) / sizeof(elem_type)), (elem_size_type)sizeof(elem_type), compare_3);
+    /* bubble_sort(a, (sort_index_type)(sizeof(a) / sizeof(elem_type)), (elem_size_type)sizeof(elem_type), compare_3); */
+    /* bubble_sort_improve(a, (sort_index_type)(sizeof(a) / sizeof(elem_type)), (elem_size_type)sizeof(elem_type), compare_3); */
+    select_sort(a, (sort_index_type)(sizeof(a) / sizeof(elem_type)), (elem_size_type)sizeof(elem_type), compare_3);
     int i;
     for (i = 0; i < sizeof(a) / sizeof(elem_type); ++i)
     {
@@ -141,6 +187,7 @@ void sort_test_3()
 }
 void sort_test_33()
 {
+    fprintf(stdout, "test33:\n");
     Student stu1 = {"Tom", 4};
     Student stu2 = {"Amy", 6};
     Student stu3 = {"Miguel", 5};
@@ -151,7 +198,9 @@ void sort_test_33()
     Student stu8 = {"Tony", 3};
 
     elem_type a[] = {&stu1, &stu2, &stu3, &stu4, &stu5, &stu6, &stu7, &stu8};
-    bubble_sort(a, (sort_index_type)(sizeof(a) / sizeof(elem_type)), (elem_size_type)sizeof(elem_type), compare_3);
+    /* bubble_sort(a, (sort_index_type)(sizeof(a) / sizeof(elem_type)), (elem_size_type)sizeof(elem_type), compare_3);*/
+    /* bubble_sort_improve(a, (sort_index_type)(sizeof(a) / sizeof(elem_type)), (elem_size_type)sizeof(elem_type), compare_3); */
+    select_sort(a, (sort_index_type)(sizeof(a) / sizeof(elem_type)), (elem_size_type)sizeof(elem_type), compare_3);
     int i;
     for (i = 0; i < sizeof(a) / sizeof(long); ++i)
     {
@@ -159,8 +208,10 @@ void sort_test_33()
     }
     fprintf(stdout, "********************************\n");
 }
+
 void sort_test_333()
 {
+    fprintf(stdout, "test333:\n");
     elem_type stu1_ = (elem_type)malloc(sizeof(Student));
     stu1_->name = "Tom";
     stu1_->age = 4;
@@ -187,7 +238,9 @@ void sort_test_333()
     stu8_->age = 3;
 
     elem_type a[] = {stu1_, stu2_, stu3_, stu4_, stu5_, stu6_, stu7_, stu8_};
-    bubble_sort(a, (sort_index_type)(sizeof(a) / sizeof(elem_type)), (elem_size_type)sizeof(elem_type), compare_3);
+    /* bubble_sort(a, (sort_index_type)(sizeof(a) / sizeof(elem_type)), (elem_size_type)sizeof(elem_type), compare_3);*/
+    /* bubble_sort_improve(a, (sort_index_type)(sizeof(a) / sizeof(elem_type)), (elem_size_type)sizeof(elem_type), compare_3); */
+    select_sort(a, (sort_index_type)(sizeof(a) / sizeof(elem_type)), (elem_size_type)sizeof(elem_type), compare_3);
     int i;
     for (i = 0; i < sizeof(a) / sizeof(elem_type); ++i)
     {
@@ -202,4 +255,31 @@ void sort_test_333()
     free(stu6_);
     free(stu7_);
     free(stu8_);
+}
+int compare_4(const void *a, const void *b)
+{
+    return strcmp(((*((elem_type *)a))->name), ((*((elem_type *)b))->name));
+}
+void sort_test_4()
+{
+    fprintf(stdout, "test4:sort by name\n");
+    Student stu1 = {"Tom", 4};
+    Student stu2 = {"Amy", 6};
+    Student stu3 = {"Miguel", 5};
+    Student stu4 = {"Jacob", 2};
+    Student stu5 = {"Alex", 8};
+    Student stu6 = {"Bob", 1};
+    Student stu7 = {"John", 7};
+    Student stu8 = {"Tony", 3};
+
+    elem_type a[] = {&stu1, &stu2, &stu3, &stu4, &stu5, &stu6, &stu7, &stu8};
+    /* bubble_sort(a, (sort_index_type)(sizeof(a) / sizeof(elem_type)), (elem_size_type)sizeof(elem_type), compare_4);*/
+    /* bubble_sort_improve(a, (sort_index_type)(sizeof(a) / sizeof(elem_type)), (elem_size_type)sizeof(elem_type), compare_4); */
+    select_sort(a, (sort_index_type)(sizeof(a) / sizeof(elem_type)), (elem_size_type)sizeof(elem_type), compare_4);
+    int i;
+    for (i = 0; i < sizeof(a) / sizeof(long); ++i)
+    {
+        fprintf(stdout, "%s: %d\n", a[i]->name, a[i]->age);
+    }
+    fprintf(stdout, "********************************\n");
 }

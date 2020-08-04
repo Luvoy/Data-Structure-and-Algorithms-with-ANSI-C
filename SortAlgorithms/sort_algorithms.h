@@ -4,6 +4,7 @@
 使用方法:
 arr中的元素类型必须一致, 需要实现int (*compare)(const void *, const void *)函数
 升序降序也通过compare函数实现
+默认升序时，compare(a,b)类似于a-b的顺序
 */
 #include <stdint.h>
 #ifndef SORT_INDEX_TYPE
@@ -20,5 +21,7 @@ extern void swap(void *a, void *b, elem_size_type);
 extern int compare(const void *a, const void *b);
 
 extern void bubble_sort(void *arr, sort_index_type arr_size, elem_size_type elem_size, int (*compare)(const void *, const void *));
+extern void bubble_sort_improve(void *arr, sort_index_type arr_size, elem_size_type elem_size, int (*compare)(const void *, const void *));
+extern void select_sort(void *arr, sort_index_type arr_size, elem_size_type elem_size, int (*compare)(const void *, const void *));
 
 #endif

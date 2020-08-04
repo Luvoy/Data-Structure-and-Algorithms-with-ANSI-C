@@ -2,13 +2,13 @@
 #ifndef _SORT_ALGO_TEST_H_
 #define _SORT_ALGO_TEST_H_
 
-void sort_test_1();
-void sort_test_11();
-void sort_test_111();
-void sort_test_2();
-void sort_test_22();
-void sort_test_3();
-void sort_test_33();
-void sort_test_333();
-void sort_test_4();
+extern void sort_test_1();
+extern void sort_test_11();
+extern void sort_test_111();
+extern void sort_test_2();
+extern void sort_test_22();
+extern void sort_test_3();
+extern void sort_test_33();
+extern void sort_test_333();
+extern void sort_test_4();
 #endif

@@ -14,47 +14,47 @@ typedef struct Vector
     element_type *items_p;
 } Vector;
 
-Vector *vector_new(size_type size);
-Vector *vector_new_from_vector(const Vector *v);
-Vector *vector_new_from_elem_array(element_type *p, size_type size);
+extern Vector *vector_new(size_type size);
+extern Vector *vector_new_from_vector(const Vector *v);
+extern Vector *vector_new_from_elem_array(element_type *p, size_type size);
 
 extern void vector_print(const Vector *v, const char *format);
 
-void vector_free(Vector *v);
+extern void vector_free(Vector *v);
 #define vector_destroy(v) vector_free(v)
 
-size_type vector_length(const Vector *v);
+extern size_type vector_length(const Vector *v);
 #define vector_len(v) vector_length(v)
 
-element_type vector_elem_at(const Vector *v, size_type index, my_bool allow_negative_index);
+extern element_type vector_elem_at(const Vector *v, size_type index, my_bool allow_negative_index);
 #define vector_get(v, i, b) vector_elem_at((v), (i), (b))
 
-void vector_index_assign(const Vector *v, size_type index, element_type elem);
+extern void vector_index_assign(const Vector *v, size_type index, element_type elem);
 #define vector_set(v, i, e) vector_index_assign((v), (i), (e))
 
-size_type vector_index_of(const Vector *v, element_type elem);
+extern size_type vector_index_of(const Vector *v, element_type elem);
 #define vector_find(v, i) vector_index_of((v), (i))
 #define vector_index(v, i) vector_index_of((v), (i))
 
-void vector_append(Vector *v, element_type elem);
+extern void vector_append(Vector *v, element_type elem);
 #define vector_push(v, e) vector_append((v), (e))
 
-void vector_join(Vector *v_left, Vector *v_right);
+extern void vector_join(Vector *v_left, Vector *v_right);
 
-element_type vector_pop(Vector *v);
+extern element_type vector_pop(Vector *v);
 #define vector_pop_last(v) vector_pop(v)
 
-element_type vector_pop_i(Vector *v, size_t index);
+extern element_type vector_pop_i(Vector *v, size_t index);
 #define vector_delete_i(v, i) vector_pop_i((v), (i))
 #define vector_remove_i(v, i) vector_pop_i((v), (i))
 
-void vector_insert(Vector *v, size_t i, element_type e);
+extern void vector_insert(Vector *v, size_t i, element_type e);
 #define vector_insert_i(v, i, e) vector_insert((v), (i), (e))
 void vector_deep_copy(const Vector *v_src, Vector *v_des);
 #define vector_copy(src, des) vector_deep_copy((src), (des))
 
-Vector *vector_slice(Vector *v, size_type start, size_type end, size_type step);
+extern Vector *vector_slice(Vector *v, size_type start, size_type end, size_type step);
 
-void vector_reverse(Vector *v);
+extern void vector_reverse(Vector *v);
 
 #endif

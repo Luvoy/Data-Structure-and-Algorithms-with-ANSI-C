@@ -11,10 +11,14 @@ int compare_1(const void *a, const void *b)
 void sort_test_1()
 {
     fprintf(stdout, "test1:\n");
+    /*  index:       0, 1, 2, 3, 4, 5, 6, 7, 8,  9, 10  */
     elem_type a[] = {4, 6, 5, 2, 8, 1, 9, 7, 0, -2, 3};
     /* bubble_sort(a, (sort_index_type)(sizeof(a) / sizeof(elem_type)), (elem_size_type)sizeof(elem_type), compare_1); */
     /* bubble_sort_improve(a, (sort_index_type)(sizeof(a) / sizeof(elem_type)), (elem_size_type)sizeof(elem_type), compare_1); */
-    select_sort(a, (sort_index_type)(sizeof(a) / sizeof(elem_type)), (elem_size_type)sizeof(elem_type), compare_1);
+    /* select_sort(a, (sort_index_type)(sizeof(a) / sizeof(elem_type)), (elem_size_type)sizeof(elem_type), compare_1); */
+    /* insert_sort(a, (sort_index_type)(sizeof(a) / sizeof(elem_type)), (elem_size_type)sizeof(elem_type), compare_1); */
+    /* shell_sort(a, (sort_index_type)(sizeof(a) / sizeof(elem_type)), (elem_size_type)sizeof(elem_type), compare_1); */
+    quick_sort(a, (sort_index_type)(sizeof(a) / sizeof(elem_type)), (elem_size_type)sizeof(elem_type), compare_1);
     int i;
     for (i = 0; i < sizeof(a) / sizeof(elem_type); ++i)
     {
@@ -28,7 +32,10 @@ void sort_test_11()
     elem_type a[] = {6, 5};
     /* bubble_sort(a, (sort_index_type)(sizeof(a) / sizeof(elem_type)), (elem_size_type)sizeof(elem_type), compare_1); */
     /* bubble_sort_improve(a, (sort_index_type)(sizeof(a) / sizeof(elem_type)), (elem_size_type)sizeof(elem_type), compare_1); */
-    select_sort(a, (sort_index_type)(sizeof(a) / sizeof(elem_type)), (elem_size_type)sizeof(elem_type), compare_1);
+    /* select_sort(a, (sort_index_type)(sizeof(a) / sizeof(elem_type)), (elem_size_type)sizeof(elem_type), compare_1); */
+    /* insert_sort(a, (sort_index_type)(sizeof(a) / sizeof(elem_type)), (elem_size_type)sizeof(elem_type), compare_1); */
+    /* shell_sort(a, (sort_index_type)(sizeof(a) / sizeof(elem_type)), (elem_size_type)sizeof(elem_type), compare_1); */
+    quick_sort(a, (sort_index_type)(sizeof(a) / sizeof(elem_type)), (elem_size_type)sizeof(elem_type), compare_1);
     int i;
     for (i = 0; i < sizeof(a) / sizeof(elem_type); ++i)
     {
@@ -46,7 +53,10 @@ void sort_test_111()
     elem_type a[] = {4, 6, 5, 2, 8, 1, 9, 7, 0, -2, 3};
     /* bubble_sort(a, (sort_index_type)(sizeof(a) / sizeof(elem_type)), (elem_size_type)sizeof(elem_type), compare_1); */
     /* bubble_sort_improve(a, (sort_index_type)(sizeof(a) / sizeof(elem_type)), (elem_size_type)sizeof(elem_type), compare_1_descent); */
-    select_sort(a, (sort_index_type)(sizeof(a) / sizeof(elem_type)), (elem_size_type)sizeof(elem_type), compare_1_descent);
+    /* select_sort(a, (sort_index_type)(sizeof(a) / sizeof(elem_type)), (elem_size_type)sizeof(elem_type), compare_1_descent); */
+    /* insert_sort(a, (sort_index_type)(sizeof(a) / sizeof(elem_type)), (elem_size_type)sizeof(elem_type), compare_1_descent); */
+    /* shell_sort(a, (sort_index_type)(sizeof(a) / sizeof(elem_type)), (elem_size_type)sizeof(elem_type), compare_1_descent); */
+    quick_sort(a, (sort_index_type)(sizeof(a) / sizeof(elem_type)), (elem_size_type)sizeof(elem_type), compare_1_descent);
     int i;
     for (i = 0; i < sizeof(a) / sizeof(elem_type); ++i)
     {
@@ -84,7 +94,10 @@ void sort_test_2()
     elem_type a[] = {stu1, stu2, stu3, stu4, stu5, stu6, stu7, stu8};
     /* bubble_sort(a, (sort_index_type)(sizeof(a) / sizeof(elem_type)), (elem_size_type)sizeof(elem_type), compare_2); */
     /* bubble_sort_improve(a, (sort_index_type)(sizeof(a) / sizeof(elem_type)), (elem_size_type)sizeof(elem_type), compare_2); */
-    select_sort(a, (sort_index_type)(sizeof(a) / sizeof(elem_type)), (elem_size_type)sizeof(elem_type), compare_2);
+    /* select_sort(a, (sort_index_type)(sizeof(a) / sizeof(elem_type)), (elem_size_type)sizeof(elem_type), compare_2); */
+    /* insert_sort(a, (sort_index_type)(sizeof(a) / sizeof(elem_type)), (elem_size_type)sizeof(elem_type), compare_2); */
+    /* shell_sort(a, (sort_index_type)(sizeof(a) / sizeof(elem_type)), (elem_size_type)sizeof(elem_type), compare_2); */
+    quick_sort(a, (sort_index_type)(sizeof(a) / sizeof(elem_type)), (elem_size_type)sizeof(elem_type), compare_2);
 
     int i;
     for (i = 0; i < sizeof(a) / sizeof(elem_type); ++i)
@@ -124,7 +137,10 @@ void sort_test_22()
     fprintf(stdout, "after sort:\n");
     /* bubble_sort(a, 8, (elem_size_type)sizeof(elem_type), compare_2); */
     /* bubble_sort_improve(a, 8, (elem_size_type)sizeof(elem_type), compare_2); */
-    select_sort(a, 8, (elem_size_type)sizeof(elem_type), compare_2);
+    /* select_sort(a, 8, (elem_size_type)sizeof(elem_type), compare_2); */
+    /* insert_sort(a, 8, (elem_size_type)sizeof(elem_type), compare_2); */
+    /* shell_sort(a, 8, (elem_size_type)sizeof(elem_type), compare_2); */
+    quick_sort(a, 8, (elem_size_type)sizeof(elem_type), compare_2);
     for (i = 0; i < 8; ++i)
     {
         fprintf(stdout, "%s: %d\n", a[i].name, a[i].age);
@@ -173,7 +189,10 @@ void sort_test_3()
     printf("*a->age:%d, *(a+1)->age:%d, *(a+2)->age:%d\n", (*a)->age, (*(a + 1))->age, (*(a + 2))->age);
     /* bubble_sort(a, (sort_index_type)(sizeof(a) / sizeof(elem_type)), (elem_size_type)sizeof(elem_type), compare_3); */
     /* bubble_sort_improve(a, (sort_index_type)(sizeof(a) / sizeof(elem_type)), (elem_size_type)sizeof(elem_type), compare_3); */
-    select_sort(a, (sort_index_type)(sizeof(a) / sizeof(elem_type)), (elem_size_type)sizeof(elem_type), compare_3);
+    /* select_sort(a, (sort_index_type)(sizeof(a) / sizeof(elem_type)), (elem_size_type)sizeof(elem_type), compare_3); */
+    /* insert_sort(a, (sort_index_type)(sizeof(a) / sizeof(elem_type)), (elem_size_type)sizeof(elem_type), compare_3); */
+    /* shell_sort(a, (sort_index_type)(sizeof(a) / sizeof(elem_type)), (elem_size_type)sizeof(elem_type), compare_3); */
+    quick_sort(a, (sort_index_type)(sizeof(a) / sizeof(elem_type)), (elem_size_type)sizeof(elem_type), compare_3);
     int i;
     for (i = 0; i < sizeof(a) / sizeof(elem_type); ++i)
     {
@@ -200,7 +219,10 @@ void sort_test_33()
     elem_type a[] = {&stu1, &stu2, &stu3, &stu4, &stu5, &stu6, &stu7, &stu8};
     /* bubble_sort(a, (sort_index_type)(sizeof(a) / sizeof(elem_type)), (elem_size_type)sizeof(elem_type), compare_3);*/
     /* bubble_sort_improve(a, (sort_index_type)(sizeof(a) / sizeof(elem_type)), (elem_size_type)sizeof(elem_type), compare_3); */
-    select_sort(a, (sort_index_type)(sizeof(a) / sizeof(elem_type)), (elem_size_type)sizeof(elem_type), compare_3);
+    /* select_sort(a, (sort_index_type)(sizeof(a) / sizeof(elem_type)), (elem_size_type)sizeof(elem_type), compare_3); */
+    /* insert_sort(a, (sort_index_type)(sizeof(a) / sizeof(elem_type)), (elem_size_type)sizeof(elem_type), compare_3); */
+    /* shell_sort(a, (sort_index_type)(sizeof(a) / sizeof(elem_type)), (elem_size_type)sizeof(elem_type), compare_3); */
+    quick_sort(a, (sort_index_type)(sizeof(a) / sizeof(elem_type)), (elem_size_type)sizeof(elem_type), compare_3);
     int i;
     for (i = 0; i < sizeof(a) / sizeof(long); ++i)
     {
@@ -240,7 +262,10 @@ void sort_test_333()
     elem_type a[] = {stu1_, stu2_, stu3_, stu4_, stu5_, stu6_, stu7_, stu8_};
     /* bubble_sort(a, (sort_index_type)(sizeof(a) / sizeof(elem_type)), (elem_size_type)sizeof(elem_type), compare_3);*/
     /* bubble_sort_improve(a, (sort_index_type)(sizeof(a) / sizeof(elem_type)), (elem_size_type)sizeof(elem_type), compare_3); */
-    select_sort(a, (sort_index_type)(sizeof(a) / sizeof(elem_type)), (elem_size_type)sizeof(elem_type), compare_3);
+    /* select_sort(a, (sort_index_type)(sizeof(a) / sizeof(elem_type)), (elem_size_type)sizeof(elem_type), compare_3); */
+    /* insert_sort(a, (sort_index_type)(sizeof(a) / sizeof(elem_type)), (elem_size_type)sizeof(elem_type), compare_3); */
+    /* shell_sort(a, (sort_index_type)(sizeof(a) / sizeof(elem_type)), (elem_size_type)sizeof(elem_type), compare_3); */
+    quick_sort(a, (sort_index_type)(sizeof(a) / sizeof(elem_type)), (elem_size_type)sizeof(elem_type), compare_3);
     int i;
     for (i = 0; i < sizeof(a) / sizeof(elem_type); ++i)
     {
@@ -275,7 +300,10 @@ void sort_test_4()
     elem_type a[] = {&stu1, &stu2, &stu3, &stu4, &stu5, &stu6, &stu7, &stu8};
     /* bubble_sort(a, (sort_index_type)(sizeof(a) / sizeof(elem_type)), (elem_size_type)sizeof(elem_type), compare_4);*/
     /* bubble_sort_improve(a, (sort_index_type)(sizeof(a) / sizeof(elem_type)), (elem_size_type)sizeof(elem_type), compare_4); */
-    select_sort(a, (sort_index_type)(sizeof(a) / sizeof(elem_type)), (elem_size_type)sizeof(elem_type), compare_4);
+    /* select_sort(a, (sort_index_type)(sizeof(a) / sizeof(elem_type)), (elem_size_type)sizeof(elem_type), compare_4); */
+    /* insert_sort(a, (sort_index_type)(sizeof(a) / sizeof(elem_type)), (elem_size_type)sizeof(elem_type), compare_4); */
+    /* shell_sort(a, (sort_index_type)(sizeof(a) / sizeof(elem_type)), (elem_size_type)sizeof(elem_type), compare_4); */
+    quick_sort(a, (sort_index_type)(sizeof(a) / sizeof(elem_type)), (elem_size_type)sizeof(elem_type), compare_4);
     int i;
     for (i = 0; i < sizeof(a) / sizeof(long); ++i)
     {

@@ -20,19 +20,22 @@ static Student *student_calloc(size_type size)
     stu->san_wei = (float *)calloc(3, sizeof(float));
     return stu;
 }
-static void student_free(Student *stu)
+static void student_free(Student **stu)
 {
-
-    if (stu->san_wei_memory_flag)
+    if ((*stu) != NULL)
     {
-        free(stu->san_wei);
-        stu->san_wei = NULL;
-    }
 
-    if (stu->dynamic_memory_flag)
-    {
-        free(stu);
-        stu = NULL; /* 没用*/
+        if ((*stu)->san_wei_memory_flag)
+        {
+            free((*stu)->san_wei);
+            (*stu)->san_wei = NULL;
+        }
+
+        if ((*stu)->dynamic_memory_flag)
+        {
+            free(*stu);
+            *stu = NULL; /* 没用*/
+        }
     }
 }
 

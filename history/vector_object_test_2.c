@@ -12,9 +12,13 @@ static elem_type *elem_calloc(size_type size)
     elem_type *elem_p = (elem_type *)calloc(1, size);
     return elem_p;
 }
-static void elem_free(elem_type *elem_p)
+static void elem_free(elem_type **elem_p)
 {
-    /* doing nothing is the best */
+    if (*elem_p != NULL)
+    {
+        free(*elem_p);
+        *elem_p = NULL;
+    }
     return;
 }
 

@@ -1,15 +1,20 @@
 #include "hash_map_test.h"
 #include "../str_func.h"
-#ifndef HASH_MAP_DEBUG
-#define HASH_MAP_DEBUG
-#endif
+
 #include <time.h>
 #include <string.h>
 
 static void print_key_str(FILE *p, const void *key)
-{ /*当key = null， 会打印一个"(null)"*/
-    /*即便如此，也不应该传入NULL，不同平台可能不一样。*/
-    fprintf(p, "%s", (const char *)key);
+{ /*在mingw32当key = null， 会打印一个"(null)"*/
+    /*即便如此，也不应该自动处理NULL，不同平台可能不一样。*/
+    if (key == NULL)
+    {
+        fprintf(p, "(null)");
+    }
+    else
+    {
+        fprintf(p, "%s", (const char *)key);
+    }
 }
 
 static void print_value(FILE *p, const void *value)
@@ -56,7 +61,7 @@ static size_t key_str_len(const void *key)
 
 void hash_map_test_1()
 {
-#ifdef HASH_MAP_DEBUG
+#ifdef DEBUG_HASH_MAP
     print_key_str(stderr, NULL);
     fprintf(stdout, "\n");
 #endif
@@ -121,15 +126,27 @@ void hash_map_test_1()
         fprintf(stdout, "\n");
     }
     free(*keys);
+#ifdef DEBUG_ALLOC_FREE_COUNT
+    g_free_count++;
+#endif
     free(*values);
+#ifdef DEBUG_ALLOC_FREE_COUNT
+    g_free_count++;
+#endif
     free(keys);
+#ifdef DEBUG_ALLOC_FREE_COUNT
+    g_free_count++;
+#endif
     free(values);
+#ifdef DEBUG_ALLOC_FREE_COUNT
+    g_free_count++;
+#endif
     hash_map_free(&hm);
 }
 void hash_map_test_2()
 {
     FILE *fp;
-    if ((fp = fopen(".\\test\\hash_map_test.txt", "w")) == NULL)
+    if ((fp = fopen("./test/hash_map_test.txt", "w")) == NULL)
     {
         fprintf(stderr, "Fail to open file!\n");
         return;
@@ -145,8 +162,10 @@ void hash_map_test_2()
     {
         a[i] = i;
         s[i] = my_itoa(randint_a_b(10000, 99999), 10);
+#ifdef DEBUG_HASH_MAP
         fprintf(stdout, s[i]);
         fprintf(stdout, "\n");
+#endif
     }
     for (i = 0; i < total; ++i)
     {
@@ -157,6 +176,9 @@ void hash_map_test_2()
     for (i = 0; i < total; ++i)
     {
         free(s[i]);
+#ifdef DEBUG_ALLOC_FREE_COUNT
+        g_free_count++;
+#endif
     }
     fclose(fp);
 }

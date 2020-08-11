@@ -2,22 +2,22 @@
 #include "../str_func.h"
 #include <assert.h>
 #include <string.h>
+
 #ifndef NODE_ADD_ALGORITHM
 #define NODE_ADD_ALGORITHM
 #endif
+
 #ifdef NODE_ADD_ALGORITHM
 #define NODE_ADD_HAED
 #define NODE_ADD_TAIL
 #endif
+
 #ifdef NODE_ADD_TAIL
 #undef NODE_ADD_HAED
 #endif
+
 #ifdef NODE_ADD_HAED
 #undef NODE_ADD_TAIL
-#endif
-
-#ifndef HASH_MAP_DEBUG
-#define HASH_MAP_DEBUG
 #endif
 
 extern uint32_t murmur_hash(const void *p, size_t len)
@@ -108,6 +108,9 @@ extern HashMap *hash_map_new(size_t n, uint32_t (*p_func_hash_code)(const void *
     } /* 让hashmap的总容量为2的次幂*/
 
     HashMap *hm = (HashMap *)calloc(1, sizeof(HashMap));
+#ifdef DEBUG_ALLOC_FREE_COUNT
+    g_alloc_count++;
+#endif
     assert(hm);
     hm->total_size = temp + 1; /* 给null留一个*/
     hm->used_size = 0;
@@ -115,12 +118,18 @@ extern HashMap *hash_map_new(size_t n, uint32_t (*p_func_hash_code)(const void *
     hm->p_func_key_equal = p_func_key_equal;
     hm->p_func_key_len = p_func_key_len;
     hm->maps = (HashNode *)calloc(hm->total_size, sizeof(HashNode));
+#ifdef DEBUG_ALLOC_FREE_COUNT
+    g_alloc_count++;
+#endif
     assert(hm->maps);
     size_t i;
     for (i = 0; i < hm->total_size; ++i)
     {
         (hm->maps + i)->next = NULL;
         (hm->maps + i)->data = (KV *)calloc(1, sizeof(KV));
+#ifdef DEBUG_ALLOC_FREE_COUNT
+        g_alloc_count++;
+#endif
         assert((hm->maps + i)->data);
     }
     return hm;
@@ -141,8 +150,14 @@ extern void hash_map_free(HashMap **hm)
             if (p_second != (*hm)->maps + i)
             { /*如果倒数第二个指针指向的不是头，那么释放它*/
                 free(p_second->data);
+#ifdef DEBUG_ALLOC_FREE_COUNT
+                g_free_count++;
+#endif
                 p_second->data = NULL;
                 free(p_second);
+#ifdef DEBUG_ALLOC_FREE_COUNT
+                g_free_count++;
+#endif
             }
         }
         p_second = NULL;
@@ -150,23 +165,41 @@ extern void hash_map_free(HashMap **hm)
         { /*如果最后一个节点不是第一个（也就是尾指针移动了）*/
             /*释放尾*/
             free(p_last->data);
+#ifdef DEBUG_ALLOC_FREE_COUNT
+            g_free_count++;
+#endif
             p_last->data = NULL;
             free(p_last);
+#ifdef DEBUG_ALLOC_FREE_COUNT
+            g_free_count++;
+#endif
             p_last = NULL;
         }
 
         /*释放头*/
         free(((*hm)->maps + i)->data);
+#ifdef DEBUG_ALLOC_FREE_COUNT
+        g_free_count++;
+#endif
         ((*hm)->maps + i)->data = NULL;
         /* if (i != 0)
         {
             free(((*hm)->maps) + i);
+#ifdef DEBUG_ALLOC_FREE_COUNT
+            g_free_count++;
+#endif
         } */
         /* 这里不用free！*/
     }
     free((*hm)->maps);
+#ifdef DEBUG_ALLOC_FREE_COUNT
+    g_free_count++;
+#endif
     (*hm)->maps = NULL;
     free(*hm);
+#ifdef DEBUG_ALLOC_FREE_COUNT
+    g_free_count++;
+#endif
     *hm = NULL;
 }
 
@@ -201,7 +234,7 @@ extern void *hash_map_put_kv(HashMap **hm, void *key, void *value)
     {
         uint32_t hash = (*hm)->p_func_hash_code(key, (*hm)->p_func_key_len(key));
         index = (hash & ((*hm)->total_size - 2)) + 1;
-#ifdef HASH_MAP_DEBUG
+#ifdef DEBUG_HASH_MAP
         fprintf(stdout, "hash of key: %u, index: %u\n", hash, index);
 #endif
     }
@@ -257,8 +290,14 @@ extern void *hash_map_put_kv(HashMap **hm, void *key, void *value)
     }
 
     HashNode *new_entry = (HashNode *)calloc(1, sizeof(HashNode));
+#ifdef DEBUG_ALLOC_FREE_COUNT
+    g_alloc_count++;
+#endif
     assert(new_entry);
     new_entry->data = calloc(1, sizeof(KV));
+#ifdef DEBUG_ALLOC_FREE_COUNT
+    g_alloc_count++;
+#endif
     assert(new_entry->data);
     new_entry->data->key = key;
     new_entry->data->value = value;
@@ -343,6 +382,9 @@ void *hash_map_remove(HashMap *hm, void *key)
     { /*如果首个就是*/
         void *ret = entry->data->value;
         /* free(entry->data);
+#ifdef DEBUG_ALLOC_FREE_COUNT
+            g_free_count++;
+#endif
         entry->data = NULL; */
         /*不应该释放*/
         entry->data->value = NULL;
@@ -361,8 +403,14 @@ void *hash_map_remove(HashMap *hm, void *key)
             void *ret = entry->data->value;
             temp->next = entry->next;
             free(entry->data);
+#ifdef DEBUG_ALLOC_FREE_COUNT
+            g_free_count++;
+#endif
             entry->data = NULL;
             free(entry);
+#ifdef DEBUG_ALLOC_FREE_COUNT
+            g_free_count++;
+#endif
             hm->used_size--;
             return ret;
         }
@@ -377,8 +425,14 @@ void **hash_map_keys(HashMap *hm)
     /* 调用者必须free(*return),free(return)*/
     assert(hm);
     void **keys = calloc(1 + hm->used_size, sizeof(void *));
+#ifdef DEBUG_ALLOC_FREE_COUNT
+    g_alloc_count++;
+#endif
     assert(keys);
     *(keys + 0) = (size_t *)calloc(1, sizeof(size_t));
+#ifdef DEBUG_ALLOC_FREE_COUNT
+    g_alloc_count++;
+#endif
     assert(*keys);
     *(size_t *)(*keys + 0) = hm->used_size;
     HashNode *entry;
@@ -405,8 +459,14 @@ void **hash_map_values(HashMap *hm)
     /* 调用者必须free(*return),free(return)*/
     assert(hm);
     void **values = calloc(1 + hm->used_size, sizeof(void *));
+#ifdef DEBUG_ALLOC_FREE_COUNT
+    g_alloc_count++;
+#endif
     assert(values);
     *(values + 0) = (size_t *)calloc(1, sizeof(size_t));
+#ifdef DEBUG_ALLOC_FREE_COUNT
+    g_alloc_count++;
+#endif
     assert(*values);
     *(size_t *)(*values + 0) = hm->used_size;
     HashNode *entry;
@@ -429,9 +489,9 @@ void **hash_map_values(HashMap *hm)
 
 void hash_map_print(HashMap *hm, FILE *f, void (*print_key)(FILE *, const void *), void (*print_value)(FILE *, const void *))
 {
-    fprintf(f, "=============== HashMap at 0x%p ===============\n", hm);
-    fprintf(f, "=============== used_size: %10u ===============\n", (hm->used_size));
-    fprintf(f, "=============== total_size: %9u ===============\n", (hm->total_size));
+    fprintf(f, "=================== HashMap at %18p ===================\n", hm);
+    fprintf(f, "================== used_size: %20llu ==================\n", (hm->used_size));
+    fprintf(f, "================= total_size: %20llu ==================\n", (hm->total_size));
     uint32_t index;
     char *format = long_long_int_format_align_str(hm->total_size);
     for (index = 0; index < hm->total_size; ++index)
@@ -471,12 +531,15 @@ void hash_map_print(HashMap *hm, FILE *f, void (*print_key)(FILE *, const void *
         }
         if (index == hm->total_size - 1)
         {
-            fprintf(f, "================ HashMap Print: Over ================\n");
+            fprintf(f, "======================== HashMap Print: Over ========================\n");
         }
         else
         {
-            fprintf(f, "-----------------------------------------------------\n");
+            fprintf(f, "---------------------------------------------------------------------\n");
         }
     }
     free(format);
+#ifdef DEBUG_ALLOC_FREE_COUNT
+    g_free_count++;
+#endif
 }

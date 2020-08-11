@@ -119,6 +119,9 @@ void sort_test_22()
     elem_type stu8 = {"Tony", 3};
 
     elem_type *a = (elem_type *)malloc(8 * sizeof(elem_type));
+#ifdef DEBUG_ALLOC_FREE_COUNT
+    g_alloc_count++;
+#endif
     *(a + 0) = stu1;
     *(a + 1) = stu2;
     *(a + 2) = stu3;
@@ -146,6 +149,9 @@ void sort_test_22()
         fprintf(stdout, "%s: %d\n", a[i].name, a[i].age);
     }
     free(a);
+#ifdef DEBUG_ALLOC_FREE_COUNT
+    g_free_count++;
+#endif
 }
 /* --------------------test3------------------------*/
 
@@ -171,15 +177,27 @@ void sort_test_3()
     Student stu7 = {"John", 7};
     Student stu8 = {"Tony", 3}; */
     elem_type stu5_ = (elem_type)malloc(sizeof(Student));
+#ifdef DEBUG_ALLOC_FREE_COUNT
+    g_alloc_count++;
+#endif
     stu5_->name = "Alex";
     stu5_->age = 8;
     elem_type stu6_ = (elem_type)malloc(sizeof(Student));
+#ifdef DEBUG_ALLOC_FREE_COUNT
+    g_alloc_count++;
+#endif
     stu6_->name = "Bob";
     stu6_->age = 1;
     elem_type stu7_ = (elem_type)malloc(sizeof(Student));
+#ifdef DEBUG_ALLOC_FREE_COUNT
+    g_alloc_count++;
+#endif
     stu7_->name = "John";
     stu7_->age = 7;
     elem_type stu8_ = (elem_type)malloc(sizeof(Student));
+#ifdef DEBUG_ALLOC_FREE_COUNT
+    g_alloc_count++;
+#endif
     stu8_->name = "Tony";
     stu8_->age = 3;
 
@@ -200,9 +218,21 @@ void sort_test_3()
     }
     fprintf(stdout, "********************************\n");
     free(stu5_);
+#ifdef DEBUG_ALLOC_FREE_COUNT
+    g_free_count++;
+#endif
     free(stu6_);
+#ifdef DEBUG_ALLOC_FREE_COUNT
+    g_free_count++;
+#endif
     free(stu7_);
+#ifdef DEBUG_ALLOC_FREE_COUNT
+    g_free_count++;
+#endif
     free(stu8_);
+#ifdef DEBUG_ALLOC_FREE_COUNT
+    g_free_count++;
+#endif
 }
 void sort_test_33()
 {
@@ -235,27 +265,51 @@ void sort_test_333()
 {
     fprintf(stdout, "test333:\n");
     elem_type stu1_ = (elem_type)malloc(sizeof(Student));
+#ifdef DEBUG_ALLOC_FREE_COUNT
+    g_alloc_count++;
+#endif
     stu1_->name = "Tom";
     stu1_->age = 4;
     elem_type stu2_ = (elem_type)malloc(sizeof(Student));
+#ifdef DEBUG_ALLOC_FREE_COUNT
+    g_alloc_count++;
+#endif
     stu2_->name = "Amy";
     stu2_->age = 6;
     elem_type stu3_ = (elem_type)malloc(sizeof(Student));
+#ifdef DEBUG_ALLOC_FREE_COUNT
+    g_alloc_count++;
+#endif
     stu3_->name = "Miguel";
     stu3_->age = 5;
     elem_type stu4_ = (elem_type)malloc(sizeof(Student));
+#ifdef DEBUG_ALLOC_FREE_COUNT
+    g_alloc_count++;
+#endif
     stu4_->name = "Jacob";
     stu4_->age = 2;
     elem_type stu5_ = (elem_type)malloc(sizeof(Student));
+#ifdef DEBUG_ALLOC_FREE_COUNT
+    g_alloc_count++;
+#endif
     stu5_->name = "Alex";
     stu5_->age = 8;
     elem_type stu6_ = (elem_type)malloc(sizeof(Student));
+#ifdef DEBUG_ALLOC_FREE_COUNT
+    g_alloc_count++;
+#endif
     stu6_->name = "Bob";
     stu6_->age = 1;
     elem_type stu7_ = (elem_type)malloc(sizeof(Student));
+#ifdef DEBUG_ALLOC_FREE_COUNT
+    g_alloc_count++;
+#endif
     stu7_->name = "John";
     stu7_->age = 7;
     elem_type stu8_ = (elem_type)malloc(sizeof(Student));
+#ifdef DEBUG_ALLOC_FREE_COUNT
+    g_alloc_count++;
+#endif
     stu8_->name = "Tony";
     stu8_->age = 3;
 
@@ -273,13 +327,37 @@ void sort_test_333()
     }
     fprintf(stdout, "********************************\n");
     free(stu1_);
+#ifdef DEBUG_ALLOC_FREE_COUNT
+    g_free_count++;
+#endif
     free(stu2_);
+#ifdef DEBUG_ALLOC_FREE_COUNT
+    g_free_count++;
+#endif
     free(stu3_);
+#ifdef DEBUG_ALLOC_FREE_COUNT
+    g_free_count++;
+#endif
     free(stu4_);
+#ifdef DEBUG_ALLOC_FREE_COUNT
+    g_free_count++;
+#endif
     free(stu5_);
+#ifdef DEBUG_ALLOC_FREE_COUNT
+    g_free_count++;
+#endif
     free(stu6_);
+#ifdef DEBUG_ALLOC_FREE_COUNT
+    g_free_count++;
+#endif
     free(stu7_);
+#ifdef DEBUG_ALLOC_FREE_COUNT
+    g_free_count++;
+#endif
     free(stu8_);
+#ifdef DEBUG_ALLOC_FREE_COUNT
+    g_free_count++;
+#endif
 }
 int compare_4(const void *a, const void *b)
 {

@@ -1,4 +1,9 @@
 #include "../SortAlgorithms/sort_algorithms.h"
+#include "../my_debug.h"
+#ifdef DEBUG_ALLOC_FREE_COUNT
+extern uint64_t g_alloc_count;
+extern uint64_t g_free_count;
+#endif
 #ifndef _SORT_ALGO_TEST_H_
 #define _SORT_ALGO_TEST_H_
 

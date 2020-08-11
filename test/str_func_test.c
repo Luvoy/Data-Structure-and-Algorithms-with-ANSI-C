@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "str_func_test.h"
+
 void str_func_test()
 {
     int a = 0;
@@ -22,9 +23,27 @@ void str_func_test()
     char *f_ = my_itoa(f, 2);
     printf("%s\n", f_);
     free(a_);
+#ifdef DEBUG_ALLOC_FREE_COUNT
+        g_free_count++;
+#endif
     free(b_);
+#ifdef DEBUG_ALLOC_FREE_COUNT
+        g_free_count++;
+#endif
     free(c_);
+#ifdef DEBUG_ALLOC_FREE_COUNT
+        g_free_count++;
+#endif
     free(d_);
+#ifdef DEBUG_ALLOC_FREE_COUNT
+        g_free_count++;
+#endif
     free(e_);
+#ifdef DEBUG_ALLOC_FREE_COUNT
+        g_free_count++;
+#endif
     free(f_);
+#ifdef DEBUG_ALLOC_FREE_COUNT
+        g_free_count++;
+#endif
 }

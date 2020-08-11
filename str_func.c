@@ -1,3 +1,4 @@
+#include "str_func.h"
 #include <stdlib.h>
 #include <string.h>
 #include <assert.h>
@@ -28,7 +29,9 @@ char *my_itoa(int num, int radix)
         str_len++;
     } while (unum);
     char *ret = (char *)malloc(str_len * sizeof(char));
-
+#ifdef DEBUG_ALLOC_FREE_COUNT
+    g_alloc_count++;
+#endif
     ret[str_len - 1] = '\0';
     i = str_len - 2;
     do
@@ -49,7 +52,7 @@ unsigned int get_dig_num(unsigned long long int n)
         return 1;
     }
     unsigned int ret = 0;
-#ifdef STR_FUNC_DEBUG
+#ifdef DEBUG_STR_FUNC
     unsigned long long int temp = n;
 #endif
     while (n)
@@ -57,7 +60,7 @@ unsigned int get_dig_num(unsigned long long int n)
         n /= 10;
         ret++;
     }
-#ifdef STR_FUNC_DEBUG
+#ifdef DEBUG_STR_FUNC
     fprintf(stderr, "get_dig_num(%llu) is %u\n", temp, ret);
 #endif
     return ret;
@@ -74,7 +77,7 @@ long long int abs_long_long_int(long long int n)
     {
         ret = -1 * n;
     }
-#ifdef STR_FUNC_DEBUG
+#ifdef DEBUG_STR_FUNC
     fprintf(stderr, "abs %lld is %lld\n", n, ret);
 #endif
     return ret;
@@ -95,17 +98,23 @@ char *long_long_int_format_align_str(long long int max_len_int)
         unsigned_dig_num++;
     }
     char *s = (char *)calloc(get_dig_num(unsigned_dig_num) + 5, sizeof(char));
+#ifdef DEBUG_ALLOC_FREE_COUNT
+    g_alloc_count++;
+#endif
     /* % l l d '\0' 共5个*/
     assert(s);
     strcat(s, "%");
     char *temp = my_itoa(unsigned_dig_num, 10);
-#ifdef STR_FUNC_DEBUG
+#ifdef DEBUG_STR_FUNC
     fprintf(stderr, "my_itoa(%d) is %s\n", unsigned_dig_num, temp);
 #endif
     strcat(s, temp);
     free(temp);
+#ifdef DEBUG_ALLOC_FREE_COUNT
+    g_free_count++;
+#endif
     strcat(s, "lld");
-#ifdef STR_FUNC_DEBUG
+#ifdef DEBUG_STR_FUNC
     printf("ret is %s\n", s);
 #endif
     return s;

@@ -1,4 +1,9 @@
 #include "../my_bool.h"
+#include "../my_debug.h"
+#ifdef DEBUG_ALLOC_FREE_COUNT
+extern uint64_t g_alloc_count;
+extern uint64_t g_free_count;
+#endif
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdint.h>

@@ -8,11 +8,17 @@ static void swap(void *a, void *b, elem_size_type elem_size)
     assert(a);
     assert(b);
     void *temp = malloc(elem_size);
+#ifdef DEBUG_ALLOC_FREE_COUNT
+    g_alloc_count++;
+#endif
     assert(temp);
     memcpy(temp, a, elem_size);
     memcpy(a, b, elem_size);
     memcpy(b, temp, elem_size);
     free(temp);
+#ifdef DEBUG_ALLOC_FREE_COUNT
+    g_free_count++;
+#endif
 }
 
 extern int compare(const void *a, const void *b)
@@ -105,6 +111,9 @@ extern void insert_sort(void *arr, sort_index_type arr_size, elem_size_type elem
     {
 
         void *temp = malloc(elem_size);
+#ifdef DEBUG_ALLOC_FREE_COUNT
+        g_alloc_count++;
+#endif
         assert(temp);
         memcpy(temp, arr + i * elem_size, elem_size);
         for (j = i; j > 0 && compare(temp, arr + (j - 1) * elem_size) < 0; --j)
@@ -113,6 +122,9 @@ extern void insert_sort(void *arr, sort_index_type arr_size, elem_size_type elem
         }
         memcpy(arr + j * elem_size, temp, elem_size);
         free(temp);
+#ifdef DEBUG_ALLOC_FREE_COUNT
+        g_free_count++;
+#endif
     }
 }
 
@@ -129,6 +141,9 @@ extern void shell_sort(void *arr, sort_index_type arr_size, elem_size_type elem_
         for (i = d; i < arr_size; ++i)
         {
             void *temp = malloc(elem_size);
+#ifdef DEBUG_ALLOC_FREE_COUNT
+            g_alloc_count++;
+#endif
             memcpy(temp, arr + i * elem_size, elem_size);
             for (j = i - d; j >= 0 && compare(arr + j * elem_size, temp) > 0; j -= d)
             {
@@ -139,6 +154,9 @@ extern void shell_sort(void *arr, sort_index_type arr_size, elem_size_type elem_
                 memcpy(arr + (j + d) * elem_size, temp, elem_size);
             }
             free(temp);
+#ifdef DEBUG_ALLOC_FREE_COUNT
+            g_free_count++;
+#endif
         }
     }
 }
@@ -146,6 +164,9 @@ extern void shell_sort(void *arr, sort_index_type arr_size, elem_size_type elem_
 static sort_index_type _parse_subsequence(void *arr, sort_index_type left, sort_index_type right, elem_size_type elem_size, int (*compare)(const void *, const void *))
 {
     void *base_copy = malloc(elem_size);
+#ifdef DEBUG_ALLOC_FREE_COUNT
+    g_alloc_count++;
+#endif
     memcpy(base_copy, arr + elem_size * left, elem_size);
     while (left < right)
     {
@@ -163,6 +184,9 @@ static sort_index_type _parse_subsequence(void *arr, sort_index_type left, sort_
     }
     memcpy(arr + elem_size * left, base_copy, elem_size);
     free(base_copy);
+#ifdef DEBUG_ALLOC_FREE_COUNT
+    g_free_count++;
+#endif
     return left;
 }
 

@@ -1,6 +1,11 @@
 #ifndef _STR_FUNC_H_
 #define _STR_FUNC_H_
 
+#include "my_debug.h"
+#ifdef DEBUG_ALLOC_FREE_COUNT
+extern uint64_t g_alloc_count;
+extern uint64_t g_free_count;
+#endif
 /**
  * 将int数转化成字符串, 可正可负, 进制2-36, 超过返回空指针.
  * 

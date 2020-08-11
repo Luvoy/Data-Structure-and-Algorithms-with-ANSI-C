@@ -487,6 +487,53 @@ void **hash_map_values(HashMap *hm)
     return values;
 }
 
+extern VectorPtype *hash_map_keys_vector(HashMap *hm)
+{
+    assert(hm);
+    VectorPtype *keys = vector_ptype_new(hm->used_size);
+    assert(keys);
+
+    HashNode *entry;
+    uint32_t hash_index;
+    size_t used_index = 0;
+    for (hash_index = 0; hash_index < hm->total_size; hash_index++)
+    {
+        for (entry = hm->maps + hash_index; entry != NULL; entry = entry->next)
+        {
+
+            if ((hash_index == 0 && entry->data && entry->data->value) || (hash_index != 0 && entry->data && entry->data->key))
+            {
+                vector_ptype_index_assign(keys, used_index, entry->data->key);
+                used_index++;
+            }
+        }
+    }
+    return keys;
+}
+
+extern VectorPtype *hash_map_values_vector(HashMap *hm)
+{
+    assert(hm);
+    VectorPtype *values = vector_ptype_new(hm->used_size);
+    assert(values);
+    HashNode *entry;
+    uint32_t hash_index;
+    size_t used_index = 0;
+    for (hash_index = 0; hash_index < hm->total_size; hash_index++)
+    {
+        for (entry = hm->maps + hash_index; entry != NULL; entry = entry->next)
+        {
+
+            if ((hash_index == 0 && entry->data && entry->data->value) || (hash_index != 0 && entry->data && entry->data->key))
+            {
+                vector_ptype_index_assign(values, used_index, entry->data->value);
+                used_index++;
+            }
+        }
+    }
+    return values;
+}
+
 void hash_map_print(HashMap *hm, FILE *f, void (*print_key)(FILE *, const void *), void (*print_value)(FILE *, const void *))
 {
     fprintf(f, "=================== HashMap at %18p ===================\n", hm);

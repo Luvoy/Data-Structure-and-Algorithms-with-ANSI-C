@@ -1,5 +1,6 @@
 #include "../my_bool.h"
 #include "../my_debug.h"
+#include "../Vector/vector_ptype.h"
 #ifdef DEBUG_ALLOC_FREE_COUNT
 extern uint64_t g_alloc_count;
 extern uint64_t g_free_count;
@@ -46,5 +47,7 @@ extern my_bool hash_map_contains(HashMap *hm, const void *key);
 extern void *hash_map_remove(HashMap *hm, void *key);
 extern void hash_map_print(HashMap *hm, FILE *f, void (*print_key)(FILE *, const void *), void (*print_value)(FILE *, const void *));
 extern void **hash_map_keys(HashMap *hm);
+extern VectorPtype *hash_map_keys_vector(HashMap *hm);
 extern void **hash_map_values(HashMap *hm);
+extern VectorPtype *hash_map_values_vector(HashMap *hm);
 #endif

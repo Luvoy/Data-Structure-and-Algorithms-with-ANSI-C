@@ -24,6 +24,15 @@ static Node *node_new(void *data)
     return p;
 }
 
+extern my_bool linked_list_is_empty(const LinkedList L)
+{
+    if (L->next)
+    {
+        return FALSE;
+    }
+    return TRUE;
+}
+
 extern LinkedList linked_list_new(linked_list_size_type size)
 {
     if (size < 0)

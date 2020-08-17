@@ -29,6 +29,7 @@ typedef struct Node
 } Node;
 typedef Node *LinkedList;
 
+extern my_bool linked_list_is_empty(const LinkedList L);
 extern LinkedList linked_list_new(linked_list_size_type size);
 extern LinkedList linked_list_new_from_args(linked_list_size_type size, ...);
 extern LinkedList linked_list_new_from_elements(void **p, linked_list_size_type size);

@@ -141,6 +141,28 @@ void hash_map_test_1()
 #ifdef DEBUG_ALLOC_FREE_COUNT
     g_free_count++;
 #endif
+
+    fprintf(stdout, "test keys and values returned in Vector:\n");
+    VectorPtype *keys_vector = hash_map_keys_vector(hm);
+    vector_ptype_print(keys_vector, stdout, "SINGLE_LINE", print_key_str);
+    VectorPtype *values_vector = hash_map_values_vector(hm);
+    vector_ptype_print(values_vector, stdout, "SINGLE_LINE", print_value);
+    fprintf(stdout, "or we can print them using get\n");
+    for (i = 0; i < keys_vector->used_size; ++i)
+    {
+        fprintf(stdout, "key %4d: ", i);
+        print_key_str(stdout, vector_ptype_element_at(keys_vector, i, FALSE));
+        fprintf(stdout, "\n");
+    }
+    for (i = 0; i < values_vector->used_size; ++i)
+    {
+        fprintf(stdout, "value %4d: ", i);
+        print_value(stdout, vector_ptype_element_at(values_vector, i, FALSE));
+        fprintf(stdout, "\n");
+    }
+    vector_ptype_free(&keys_vector);
+    vector_ptype_free(&values_vector);
+
     hash_map_free(&hm);
 }
 void hash_map_test_2()

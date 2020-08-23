@@ -406,9 +406,7 @@ extern void linked_list_append_object(LinkedList *Lp, void *elem)
 
 extern void linked_list_join(LinkedList *Lp_left, LinkedList *Lp_right)
 {
-    assert(Lp_left);
-    assert(Lp_right);
-    if (*Lp_left == NULL || *Lp_right)
+    if (*Lp_left == NULL || *Lp_right == NULL)
     {
         return;
     }

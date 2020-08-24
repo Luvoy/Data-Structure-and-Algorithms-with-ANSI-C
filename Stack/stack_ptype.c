@@ -38,8 +38,14 @@ extern stack_size_type stack_total_size(const Stack *s)
 extern Stack *stack_new_empty(stack_size_type size)
 {
     Stack *s = (Stack *)malloc(sizeof(Stack));
+#ifdef DEBUG_ALLOC_FREE_COUNT
+    g_alloc_count++;
+#endif
     assert(s != NULL);
     s->base = (void **)calloc(size, sizeof(void *));
+#ifdef DEBUG_ALLOC_FREE_COUNT
+    g_alloc_count++;
+#endif
     assert(s->base != NULL);
     s->top = s->base - 1;
     s->size = size;
@@ -55,8 +61,14 @@ extern Stack *stack_new_from_elements(stack_size_type stack_size, stack_size_typ
         return NULL;
     }
     Stack *s = (Stack *)malloc(sizeof(Stack));
+#ifdef DEBUG_ALLOC_FREE_COUNT
+    g_alloc_count++;
+#endif
     assert(s != NULL);
     s->base = (void **)calloc(stack_size, sizeof(void *));
+#ifdef DEBUG_ALLOC_FREE_COUNT
+    g_alloc_count++;
+#endif
     assert(s->base != NULL);
     stack_size_type i;
     for (i = 0; i < elem_count; ++i)
@@ -77,8 +89,14 @@ extern Stack *stack_new_from_args(stack_size_type stack_size, stack_size_type el
         return NULL;
     }
     Stack *s = (Stack *)malloc(sizeof(Stack));
+#ifdef DEBUG_ALLOC_FREE_COUNT
+    g_alloc_count++;
+#endif
     assert(s != NULL);
     s->base = (void **)calloc(stack_size, sizeof(void *));
+#ifdef DEBUG_ALLOC_FREE_COUNT
+    g_alloc_count++;
+#endif
     assert(s->base != NULL);
     stack_size_type i;
     va_list vl;
@@ -98,7 +116,13 @@ extern void stack_free(Stack **sp)
     assert(sp != NULL);
     assert(*sp != NULL);
     free((*sp)->base);
+#ifdef DEBUG_ALLOC_FREE_COUNT
+    g_free_count++;
+#endif
     free((*sp));
+#ifdef DEBUG_ALLOC_FREE_COUNT
+    g_free_count++;
+#endif
     *sp = NULL;
 }
 

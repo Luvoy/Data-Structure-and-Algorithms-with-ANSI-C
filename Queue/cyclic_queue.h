@@ -21,7 +21,7 @@ typedef struct CyclicQueue
     void **items;
     cyclic_queue_size_type allowed_capacity;
     cyclic_queue_size_type head;
-    cyclic_queue_size_type tail;
+    cyclic_queue_size_type tail; /*指向最后一个元素的末尾位置，而不是起始地址，也就是address+sizeof(void*) */
 } CyclicQueue;
 
 extern my_bool cyclic_queue_is_empty(const CyclicQueue *cq);

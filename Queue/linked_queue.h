@@ -25,7 +25,7 @@ typedef struct QNode
 typedef struct LinkedQueue
 {
     QNode *head;
-    QNode *tail;
+    QNode *tail; /*指向最后一个元素的起始地址 */
 } LinkedQueue;
 
 extern my_bool linked_queue_is_empty(const LinkedQueue *lq);

@@ -203,19 +203,21 @@ extern void hash_map_free(HashMap **hm)
     *hm = NULL;
 }
 
-extern HashMap *hash_map_extend(HashMap *hm)
-{
-    HashMap *hm_new = hash_map_new(hm->total_size, hm->p_func_hash_code, hm->p_func_key_equal, hm->p_func_key_len); /*这里直接传入hm的总size即可，因为size一直是2的次幂+1，会自动*2并且+1*/
+extern HashMap *hash_map_extend(HashMap **hm)
+{ /* 重新创建一个hash_map, 复制内容, 释放原来的, 返回新的*/
+
+    HashMap *hm_new = hash_map_new((*hm)->total_size, (*hm)->p_func_hash_code, (*hm)->p_func_key_equal, (*hm)->p_func_key_len);
+    /*这里直接传入hm的总size即可，因为size一直是2的次幂+1，会自动*2并且+1*/
     HashNode *entry;
     uint32_t hash_index;
-    for (hash_index = 0; hash_index < hm->total_size; hash_index++)
+    for (hash_index = 0; hash_index < (*hm)->total_size; hash_index++)
     {
-        for (entry = hm->maps + hash_index; entry != NULL; entry = entry->next)
+        for (entry = (*hm)->maps + hash_index; entry != NULL; entry = entry->next)
         {
             hash_map_put_kv(&hm_new, entry->data->key, entry->data->value);
         }
     }
-    hash_map_free(&hm);
+    hash_map_free(hm);
     return hm_new;
 }
 
@@ -227,7 +229,7 @@ extern void *hash_map_put_kv(HashMap **hm, void *key, void *value)
 
     if ((double)((*hm)->used_size + 1) / (double)((*hm)->total_size) > 0.75)
     {
-        (*hm) = hash_map_extend((*hm));
+        (*hm) = hash_map_extend(hm);
     }
     uint32_t index;
     if (key != NULL)

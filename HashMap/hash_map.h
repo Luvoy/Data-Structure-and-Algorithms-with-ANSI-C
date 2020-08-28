@@ -38,7 +38,7 @@ extern uint32_t BKDR_hash(const void *p, size_t len);
 /* extern uint32_t hash_code(const void *p, size_t len, const char *hash_algo); */
 extern HashMap *hash_map_new(size_t n, uint32_t (*p_func_hash_code)(const void *, size_t), my_bool (*p_func_key_equal)(const void *, const void *), size_t (*p_func_key_len)(const void *key));
 extern void hash_map_free(HashMap **hm);
-extern HashMap *hash_map_extend(HashMap *hm);
+extern HashMap *hash_map_extend(HashMap **hm);
 extern void *hash_map_put_kv(HashMap **hm, void *key, void *value);
 
 extern void *hash_map_get(HashMap *hm, void *key);

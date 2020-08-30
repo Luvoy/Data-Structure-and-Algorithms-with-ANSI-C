@@ -6,12 +6,13 @@
 #include "../test/vector_ptype_test.h"
 #include "../test/vector_generic_test.h"
 #include "../test/sort_algo_test.h"
+#include "../test/dlinked_list_headtail_test.h"
 
 #ifdef DEBUG_ALLOC_FREE_COUNT
 uint64_t g_alloc_count = 0;
 uint64_t g_free_count = 0;
 #endif
-static print_alloc_free_colorful(const char *func_name)
+static void print_alloc_free_colorful(const char *func_name)
 {
     if (g_alloc_count == g_free_count)
     {
@@ -120,5 +121,13 @@ int main(int argc, char const *argv[])
     g_alloc_count = 0;
     g_free_count = 0;
 #endif
+
+    dlinked_list_headtail_test1();
+#ifdef DEBUG_ALLOC_FREE_COUNT
+    print_alloc_free_colorful("dlinked_list_headtail_test1");
+    g_alloc_count = 0;
+    g_free_count = 0;
+#endif
+
     return 0;
 }

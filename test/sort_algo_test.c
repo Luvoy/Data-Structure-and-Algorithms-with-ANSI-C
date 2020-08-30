@@ -64,7 +64,7 @@ void sort_test_111()
     }
     fprintf(stdout, "\n");
 }
-
+#undef elem_type
 /* --------------------test2------------------------*/
 typedef struct Student
 {
@@ -153,6 +153,7 @@ void sort_test_22()
     g_free_count++;
 #endif
 }
+#undef elem_type
 /* --------------------test3------------------------*/
 
 #define elem_type Student *
@@ -363,6 +364,7 @@ int compare_4(const void *a, const void *b)
 {
     return strcmp(((*((elem_type *)a))->name), ((*((elem_type *)b))->name));
 }
+
 void sort_test_4()
 {
     fprintf(stdout, "test4:sort by name\n");

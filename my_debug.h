@@ -5,7 +5,7 @@
 /* #undef _MY_DEBUG_H_ */
 #ifdef _MY_DEBUG_H_
 #include <stdio.h>
-
+#include <assert.h>
 #ifndef DEBUG_ALLOC_FREE_COUNT
 #define DEBUG_ALLOC_FREE_COUNT
 /* #undef DEBUG_ALLOC_FREE_COUNT */

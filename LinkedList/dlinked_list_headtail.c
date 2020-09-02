@@ -4,6 +4,8 @@
 #include <string.h>
 #include <stdarg.h>
 #include <assert.h>
+#include "../my_bool.h"
+#include <inttypes.h>
 
 static DNode *_node_alloc(void)
 {
@@ -164,7 +166,6 @@ extern void dlinked_list_print(const DLinkedList DL, const char *format, void (*
         fprintf(stderr, "Undefined format str: %s! Expected \"SINGLE_LINE\" or \"MULTI_LINES\"!\n", format);
         return;
     }
-    linked_list_index_type i;
     DNode *temp = DL->head;
     while (TRUE)
     {
@@ -193,7 +194,7 @@ extern void dlinked_list_free(DLinkedList *DLP)
 {
     assert(DLP);
     assert(*DLP);
-    DNode *slow = *DLP;
+    DNode *slow = NULL;
     DNode *fast = (*DLP)->head;
     while (fast)
     {
@@ -263,6 +264,8 @@ extern void *dlinked_list_right_delete_objects(DLinkedList DL, const void *elem,
         }
         temp = temp->prev;
     }
+    fprintf(stderr, "ERROR: elem not found!\n");
+    return NULL;
 }
 
 extern void *dlinked_list_left_delete_objects(DLinkedList DL, const void *elem, linked_list_size_type n, int (*elem_cmp)(const void *, const void *))
@@ -310,6 +313,8 @@ extern void *dlinked_list_left_delete_objects(DLinkedList DL, const void *elem, 
         }
         temp = temp->next;
     }
+    fprintf(stderr, "ERROR: elem not found!\n");
+    return NULL;
 }
 
 extern linked_list_index_type dlinked_list_right_search(const DLinkedList DL, const void *elem, int (*elem_cmp)(const void *, const void *))
@@ -413,7 +418,7 @@ extern void *dlinked_list_object_at(const DLinkedList DL, linked_list_index_type
     {
         if (index < -(DL->size) || index >= DL->size)
         {
-            fprintf(stderr, "Index out of range, index = %d, allowed: %d ~ %d\n", index, -(DL->size), DL->size - 1);
+            fprintf(stderr, "Index out of range, index = %" PRId64 ", allowed: %" PRId64 " ~ %" PRId64 "\n", index, -(DL->size), DL->size - 1);
             return NULL;
         }
     }
@@ -422,7 +427,7 @@ extern void *dlinked_list_object_at(const DLinkedList DL, linked_list_index_type
         if (index < 0 || index >= DL->size)
         {
 
-            fprintf(stderr, "Index out of range, index = %d, allowed: 0 ~ %d\n", index, DL->size - 1);
+            fprintf(stderr, "Index out of range, index = %" PRId64 ", allowed: 0 ~ %" PRId64 "\n", index, DL->size - 1);
             return NULL;
         }
     }
@@ -454,7 +459,7 @@ extern void dlinked_list_insert_object(DLinkedList DL, linked_list_index_type in
     }
 }
 
-extern void dlinked_list_insert_linked_list(DLinkedList DL_src, linked_list_index_type index, DLinkedList *DL_new)
+extern void dlinked_list_insert_dlinked_list(DLinkedList DL_src, linked_list_index_type index, DLinkedList *DL_new)
 { /*将B插入A，B的头节点相关信息会被free*/
     assert(DL_new);
     if (dlinked_list_is_empty((*DL_new)) || (*DL_new) == NULL)
@@ -472,7 +477,7 @@ extern void dlinked_list_insert_linked_list(DLinkedList DL_src, linked_list_inde
     }
     if (index < 0 || index > DL_src->size)
     {
-        fprintf(stderr, "Index out of range, index = %d, allowed: 0 ~ %d\n", index, DL_src->size - 1);
+        fprintf(stderr, "Index out of range, index = %" PRId64 ", allowed: 0 ~ %" PRId64 "\n", index, DL_src->size - 1);
         return;
     }
     linked_list_index_type i = index < DL_src->size / 2 ? 0 : DL_src->size - 1;
@@ -510,7 +515,7 @@ extern status dlinked_list_insert_node(DLinkedList DL, linked_list_index_type in
 {
     if (index < 0 || index >= DL->size)
     {
-        fprintf(stderr, "Index out of range, index = %d, allowed: 0 ~ %d\n", index, DL->size - 1);
+        fprintf(stderr, "Index out of range, index = %" PRId64 ", allowed: 0 ~ %" PRId64 "\n", index, DL->size - 1);
         return -1;
     }
     linked_list_index_type i = index < DL->size / 2 ? 0 : DL->size - 1;
@@ -534,7 +539,7 @@ extern void *dlinked_list_index_assign(const DLinkedList DL, linked_list_index_t
     {
         if (index < -(DL->size) || index >= DL->size)
         {
-            fprintf(stderr, "Index out of range, index = %d, allowed: %d ~ %d\n", index, -(DL->size), DL->size - 1);
+            fprintf(stderr, "Index out of range, index = %" PRId64 ", allowed: %" PRId64 " ~ %" PRId64 "\n", index, -(DL->size), DL->size - 1);
             return NULL;
         }
     }
@@ -543,7 +548,7 @@ extern void *dlinked_list_index_assign(const DLinkedList DL, linked_list_index_t
         if (index < 0 || index >= DL->size)
         {
 
-            fprintf(stderr, "Index out of range, index = %d, allowed: 0 ~ %d\n", index, DL->size - 1);
+            fprintf(stderr, "Index out of range, index = %" PRId64 ", allowed: 0 ~ %" PRId64 "\n", index, DL->size - 1);
             return NULL;
         }
     }
@@ -574,7 +579,7 @@ extern void *dlinked_list_pop_i(DLinkedList DL, linked_list_index_type index, my
     {
         if (index < -(DL->size) || index >= DL->size)
         {
-            fprintf(stderr, "Index out of range, index = %d, allowed: %d ~ %d\n", index, -(DL->size), DL->size - 1);
+            fprintf(stderr, "Index out of range, index = %" PRId64 ", allowed: %" PRId64 " ~ %" PRId64 "\n", index, -(DL->size), DL->size - 1);
             return NULL;
         }
     }
@@ -583,7 +588,7 @@ extern void *dlinked_list_pop_i(DLinkedList DL, linked_list_index_type index, my
         if (index < 0 || index >= DL->size)
         {
 
-            fprintf(stderr, "Index out of range, index = %d, allowed: 0 ~ %d\n", index, DL->size - 1);
+            fprintf(stderr, "Index out of range, index = %" PRId64 ", allowed: 0 ~ %" PRId64 "\n", index, DL->size - 1);
             return NULL;
         }
     }
@@ -670,7 +675,7 @@ extern DLinkedList dlinked_list_slice(DLinkedList DL, linked_list_index_type lef
 
             if (left < -(DL->size))
             {
-                linked_list_index_type real_left = 0;
+                real_left = 0;
             }
             else if (left >= -(DL->size) && left < 0)
             {
@@ -685,7 +690,6 @@ extern DLinkedList dlinked_list_slice(DLinkedList DL, linked_list_index_type lef
                 return ret;
             }
             DNode *p_src = DL->head;
-            my_bool start_flag = FALSE;
             i = 0;
             for (i = 0; i < real_left; ++i)
             {
@@ -744,7 +748,6 @@ extern DLinkedList dlinked_list_slice(DLinkedList DL, linked_list_index_type lef
                 real_left = DL->size - 1;
             }
             DNode *p_src = DL->tail;
-            my_bool start_flag = FALSE;
             i = 0;
             for (i = DL->size - 1; i > real_right; --i)
             {

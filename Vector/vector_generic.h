@@ -61,5 +61,6 @@ extern void *vector_generic_pop_i(VectorGeneric *v, vector_generic_index_type in
 extern void vector_generic_insert(VectorGeneric *v, vector_generic_index_type index, void *elem);
 extern VectorGeneric *vector_generic_slice(VectorGeneric *v, vector_generic_index_type start, vector_generic_index_type end, vector_generic_index_type step);
 extern void vector_generic_reverse(VectorGeneric *v);
+extern void vector_generic_remove(VectorGeneric *v, void *elem, int (*compare)(const void *, const void *), vector_generic_index_type times);
 
 #endif

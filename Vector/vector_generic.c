@@ -410,3 +410,30 @@ extern void vector_generic_reverse(VectorGeneric *v)
 #endif
     temp = NULL;
 }
+
+extern void vector_generic_remove(VectorGeneric *v, void *elem, int (*compare)(const void *, const void *), vector_generic_index_type times)
+{
+    assert(v != NULL);
+    if (times <= 0)
+    {
+        fprintf(stderr, "Removal times > 0!\n");
+        return;
+    }
+    vector_generic_index_type k = -1, i;
+    for (i = 0; i < v->used_size; ++i)
+    {
+        if (compare(elem, (v->items_p) + i * v->elem_size))
+        {
+            memcpy(v->items_p + (i - k - 1) * v->elem_size, v->items_p + i * v->elem_size, v->elem_size);
+        }
+        else
+        {
+            ++k;
+            if (k + 1 >= times)
+            {
+                break;
+            }
+        }
+    }
+    v->used_size -= k + 1;
+}
